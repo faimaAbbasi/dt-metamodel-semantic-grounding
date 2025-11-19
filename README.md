@@ -26,7 +26,8 @@ dt-model-alignment/
 │   ├── metamodel-flexibility.js              # Change Adaptation
 │   └── model-metamodel.js                    # DT Model-Metamodel layer 
 ├── node modules                           
-├── ontology-layer/                      # DT ontology Layer for Air Quality Usecase Setup                             
+├── ontology-layer/                      # DT ontology Layer for Air Quality Usecase Setup
+│   ├── brick.ttl                              # Ontology used for Aligning Metamodel                             
 │   └── metamodel-ontology-matching.py         # Semantic and Structure-aware Metamodel Ontology Matching (SSM-OM)
 ├── output/                               # Results in .csv files for all experiments for matching tasks
 ├── testcases/                            # OAEI Testcases Used for Evaluation
