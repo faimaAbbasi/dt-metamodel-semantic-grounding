@@ -101,7 +101,7 @@ airquality_model.setModellingElements([controller1]);
 const res = discoverer.archetypalDiscovery("Controller", controller1, airquality.Controller)
 discoverer.updateClass(airquality.Controller,res)    
 ```
-To set up DT ontology layer and map metamodel to traget **[Brick](https://brickschema.org/)** ontology, for air quality usecase using **SSM-OM**, execute the following file:
+We set up DT ontology layer and map metamodel to traget **[Brick](https://brickschema.org/)** ontology, for air quality usecase using **SSM-OM**. Please install and run **[ollama](https://ollama.com/download)** prior to executing the following file:
 ```bash
 cd ontology-layer
 python metamodel-ontology-matching.py     
@@ -109,7 +109,7 @@ python metamodel-ontology-matching.py
 To evaluate the performance of **SSM-OM** on different test cases from **[OAEI tracks](https://oaei.ontologymatching.org/)** tracks, run the scripts in the **[evaluation](evaluation)** folder for each test case. The test cases themselves are available in **[testcases](testcases)** folder. A simple execution example is shown below:
 ```bash
 cd evaluation
-python anatomy-track-ontology-mapping.py     
+python knowledge-graph-track-1-ontology-matching.py     
 ```
 
 
