@@ -101,7 +101,7 @@ airquality_model.setModellingElements([controller1]);
 const res = discoverer.archetypalDiscovery("Controller", controller1, airquality.Controller)
 discoverer.updateClass(airquality.Controller,res)    
 ```
-We set up DT ontology layer and map metamodel to traget **[Brick](https://brickschema.org/)** ontology, for air quality usecase using **SSM-OM**. Please install and run **[ollama](https://ollama.com/download)** prior to executing the following file:
+We set up DT ontology layer and map metamodel to traget **[Brick](https://brickschema.org/)** ontology, for air quality usecase using **SSM-OM**. Please install **[ollama](https://ollama.com/download)** and run ```llama3``` prior to executing the following file:
 ```bash
 cd ontology-layer
 python metamodel-ontology-matching.py     
