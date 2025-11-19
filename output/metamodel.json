@@ -1,0 +1,70 @@
+[
+    {
+        "name": "Building",
+        "primitive_attributes": [
+            "id: isString"
+        ],
+        "reference_attributes": [
+            "rooms: Room[]"
+        ],
+        "description": "A structure with a roof and walls, such as a house or factory."
+    },
+    {
+        "name": "Room",
+        "primitive_attributes": [
+            "id: isString"
+        ],
+        "reference_attributes": [
+            "controllers: Controller[]"
+        ],
+        "description": "An enclosed space within a building."
+    },
+    {
+        "name": "TemperatureSensor",
+        "primitive_attributes": [
+            "value: isNumber",
+            "unit: isString"
+        ],
+        "reference_attributes": [],
+        "description": "A sensor used for measuring temperature."
+    },
+    {
+        "name": "HumiditySensor",
+        "primitive_attributes": [
+            "value: isNumber",
+            "unit: isString"
+        ],
+        "reference_attributes": [],
+        "description": "A sensor used for measuring humidity."
+    },
+    {
+        "name": "ProximitySensor",
+        "primitive_attributes": [
+            "value: isNumber",
+            "unit: isString"
+        ],
+        "reference_attributes": [],
+        "description": "A sensor used for measuring distance to nearby objects."
+    },
+    {
+        "name": "Controller",
+        "primitive_attributes": [
+            "id: isString"
+        ],
+        "reference_attributes": [
+            "alarms: Alarm[]",
+            "tempsensors: TemperatureSensor[]",
+            "humsensors: HumiditySensor[]",
+            "proximitySensor: ProximitySensor[]"
+        ],
+        "description": "A device that manages connected sensors and alarms."
+    },
+    {
+        "name": "Alarm",
+        "primitive_attributes": [
+            "isActive: isBoolean"
+        ],
+        "reference_attributes": [],
+        "description": "A device indicating an alert (on/off)."
+    }
+]

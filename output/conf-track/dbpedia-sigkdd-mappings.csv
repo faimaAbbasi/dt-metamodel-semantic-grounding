@@ -1,0 +1,3 @@
+source_class_uri,target_class_uri,semantic_relation,similarity_score,justification
+http://dbpedia.org/ontology/Hotel,http://sigkdd#Hotel,equivalent,0.5698623,Match based on Embeddings
+http://dbpedia.org/ontology/Place,http://sigkdd#Place,equivalent,0.5463546,Match based on Embeddings

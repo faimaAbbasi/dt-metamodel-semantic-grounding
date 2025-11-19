@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "csv-parser": "^3.2.0",
+    "discovery": "^1.1.0",
+    "index": "^0.4.0",
+    "jsmf": "^0.10.0",
+    "jsmf-core": "^0.12.0",
+    "mocha": "^11.7.4",
+    "n3": "^1.26.0",
+    "should": "^13.2.3",
+    "tar-stream": "^3.1.7",
+    "unzipper": "^0.12.3"
+  }
+}

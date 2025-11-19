@@ -1,0 +1,326 @@
+source_class_uri,target_class_uri,semantic_relation,similarity_score,justification
+http://schema.org/ComputerLanguage,http://www.wikidata.org/wiki/computer_language,equivalent,0.6228215,Match based on Embeddings
+http://schema.org/CommunityHealth,http://www.wikidata.org/wiki/community_health,equivalent,0.61541724,Match based on Embeddings
+http://schema.org/Sculpture,http://www.wikidata.org/wiki/sculpture,equivalent,0.61785173,Match based on Embeddings
+http://schema.org/CreativeWorkSeries,http://www.wikidata.org/wiki/series_of_creative_works,equivalent,0.55921304,Match based on Embeddings
+http://schema.org/Newspaper,http://www.wikidata.org/wiki/newspaper,equivalent,0.6269516,Match based on Embeddings
+http://schema.org/Blog,http://www.wikidata.org/wiki/Blog,equivalent,0.602007,Match based on Embeddings
+http://schema.org/PostalAddress,http://www.wikidata.org/wiki/address,equivalent,0.57670677,Match based on Embeddings
+http://schema.org/DefenceEstablishment,http://www.wikidata.org/wiki/military_facility,equivalent,0.5115,"While the similarity score is not extremely high, I believe that 'military facility' is a much better match than 'news article', as it shares a similar context and concept with 'Defence Establishment'. Both are related to military or defense-related entities, whereas 'scholarly article' seems unrelated. Given the slight edge in contextual meaning, I prefer this match over others."
+http://schema.org/Residence,http://www.wikidata.org/wiki/residence,equivalent,0.6294021,Match based on Embeddings
+http://schema.org/BookSeries,http://www.wikidata.org/wiki/book_series,equivalent,0.60984766,Match based on Embeddings
+http://schema.org/Recipe,http://www.wikidata.org/wiki/recipe,equivalent,0.64009565,Match based on Embeddings
+http://schema.org/MedicalSign,http://www.wikidata.org/wiki/clinical_sign,equivalent,0.5496,"Although the similarity score is not the highest, I choose 'clinical_sign' as the best match because it is semantically most appropriate given the context of both classes. Both 'MedicalSign' and 'clinical_sign' refer to a symptom or indicator of a medical condition, making them equivalent in terms of meaning."
+http://schema.org/Review,http://www.wikidata.org/wiki/review,equivalent,0.61640483,Match based on Embeddings
+http://schema.org/Park,http://www.wikidata.org/wiki/park,equivalent,0.6383251,Match based on Embeddings
+http://schema.org/DiagnosticProcedure,http://www.wikidata.org/wiki/medical_procedure,more general,0.5424,"While the top-scoring match is to palliative_procedure, I believe medical_procedure is a more suitable choice because it encompasses diagnostic procedures as a specific type of medical procedure. This contextual relationship aligns with the source class's purpose and meaning."
+http://schema.org/Question,http://www.wikidata.org/wiki/question,equivalent,0.6208152,Match based on Embeddings
+http://schema.org/Chapter,http://www.wikidata.org/wiki/chapter,equivalent,0.62522155,Match based on Embeddings
+http://schema.org/NGO,http://www.wikidata.org/wiki/non-governmental_organization,equivalent,0.5758794,Match based on Embeddings
+http://schema.org/Diet,http://www.wikidata.org/wiki/diet,equivalent,0.6323223,Match based on Embeddings
+http://schema.org/TattooParlor,http://www.wikidata.org/wiki/tattoo_parlor,equivalent,0.59810174,Match based on Embeddings
+http://schema.org/Episode,http://www.wikidata.org/wiki/episode,equivalent,0.6195828,Match based on Embeddings
+http://schema.org/GatedResidenceCommunity,http://www.wikidata.org/wiki/gated_community,equivalent,0.5871182,Match based on Embeddings
+http://schema.org/Photograph,http://www.wikidata.org/wiki/photograph,equivalent,0.6368982,Match based on Embeddings
+http://schema.org/RespiratoryTherapy,http://www.wikidata.org/wiki/respiratory_therapy,equivalent,0.61128116,Match based on Embeddings
+http://schema.org/ElementarySchool,http://www.wikidata.org/wiki/elementary_school,equivalent,0.6180998,Match based on Embeddings
+http://schema.org/Collection,http://www.wikidata.org/wiki/collection,equivalent,0.6059769,Match based on Embeddings
+http://schema.org/Nerve,http://www.wikidata.org/wiki/nerve,equivalent,0.6412525,Match based on Embeddings
+http://schema.org/FireStation,http://www.wikidata.org/wiki/fire_station,equivalent,0.57398456,Match based on Embeddings
+http://schema.org/GovernmentOrganization,http://www.wikidata.org/wiki/government_organization,equivalent,0.60269797,Match based on Embeddings
+http://schema.org/PhysicalExam,http://www.wikidata.org/wiki/physical_examination,equivalent,0.517739,Match based on Embeddings
+http://schema.org/TouristInformationCenter,http://www.wikidata.org/wiki/tourist_attraction,equivalent,0.5807,"While other candidates have similar scores, the semantic fit between contexts is strongest for 'tourist attraction'. This class aligns well with the idea of providing information to tourists, and the label 'tourist_attraction' accurately captures the essence of a TouristInformationCenter."
+http://schema.org/PetStore,http://www.wikidata.org/wiki/pet_store,equivalent,0.6348255,Match based on Embeddings
+http://schema.org/MovingCompany,http://www.wikidata.org/wiki/moving_company,equivalent,0.6022756,Match based on Embeddings
+http://schema.org/State,http://www.wikidata.org/wiki/federated_state,equivalent,0.549519,Match based on Embeddings
+http://schema.org/Obstetric,http://www.wikidata.org/wiki/obstetrics,equivalent,0.5784517,Match based on Embeddings
+http://schema.org/Dermatology,http://www.wikidata.org/wiki/dermatology,equivalent,0.63939565,Match based on Embeddings
+http://schema.org/LymphaticVessel,http://www.wikidata.org/wiki/lymphatic_vessel,equivalent,0.6445481,Match based on Embeddings
+http://schema.org/BeautySalon,http://www.wikidata.org/wiki/beauty_salon,equivalent,0.5811896,Match based on Embeddings
+http://schema.org/HairSalon,http://www.wikidata.org/wiki/beauty_salon,equivalent,0.5532,"The candidate matches all have a high similarity score, but the context of the beauty salon class aligns most closely with the source class 'hairsalon'. Both classes refer to establishments that provide personal grooming services, and the label 'beauty_salon' is semantically equivalent to 'hairsalon'."
+http://schema.org/Quantity,N/A,N/A,0.0,"LLM failed to parse response. Raw: Based on the provided information, I would recommend the following best semantic match for the source class:
+
+[
+{
+""source_class_uri"": http://schema.org/Quantity,
+""target_class_uri"": http://www.wikidat"
+http://schema.org/Float,http://www.wikidata.org/wiki/floating_point,equivalent,0.5597017,Match based on Embeddings
+http://schema.org/Locksmith,http://www.wikidata.org/wiki/locksmith,equivalent,0.63462716,Match based on Embeddings
+http://schema.org/Winery,http://www.wikidata.org/wiki/winery,equivalent,0.6314862,Match based on Embeddings
+http://schema.org/Bridge,http://www.wikidata.org/wiki/bridge,equivalent,0.61969364,Match based on Embeddings
+http://schema.org/OutletStore,http://www.wikidata.org/wiki/outlet_store,equivalent,0.62819487,Match based on Embeddings
+http://schema.org/DanceGroup,http://www.wikidata.org/wiki/dance_troupe,equivalent,0.581077,Match based on Embeddings
+http://schema.org/Article,http://www.wikidata.org/wiki/article,equivalent,0.61388797,Match based on Embeddings
+http://schema.org/VideoGameSeries,http://www.wikidata.org/wiki/video_game_series,equivalent,0.6062929,Match based on Embeddings
+http://schema.org/TheaterGroup,http://www.wikidata.org/wiki/theatre_troupe,equivalent,0.5805785,Match based on Embeddings
+http://schema.org/Ligament,http://www.wikidata.org/wiki/ligament,equivalent,0.65011144,Match based on Embeddings
+http://schema.org/Embassy,http://www.wikidata.org/wiki/embassy,equivalent,0.62135243,Match based on Embeddings
+http://schema.org/ParkingFacility,http://www.wikidata.org/wiki/parking_facility,equivalent,0.57680315,Match based on Embeddings
+http://schema.org/Courthouse,http://www.wikidata.org/wiki/courthouse,equivalent,0.63422406,Match based on Embeddings
+http://schema.org/Event,http://www.wikidata.org/wiki/event,equivalent,0.6226977,Match based on Embeddings
+http://schema.org/Notary,http://www.wikidata.org/wiki/notary,equivalent,0.63234675,Match based on Embeddings
+http://schema.org/Aquarium,http://www.wikidata.org/wiki/public_aquarium,equivalent,0.59852064,Match based on Embeddings
+http://schema.org/HotelRoom,http://www.wikidata.org/wiki/hotel_room,equivalent,0.630974,Match based on Embeddings
+http://schema.org/Psychiatric,http://www.wikidata.org/wiki/Psychiatry,equivalent,0.5973913,Match based on Embeddings
+http://schema.org/PalliativeProcedure,http://www.wikidata.org/wiki/palliative_procedure,equivalent,0.61304766,Match based on Embeddings
+http://schema.org/ComicSeries,http://www.wikidata.org/wiki/comic_book_series,equivalent,0.5940897,Match based on Embeddings
+http://schema.org/Apartment,http://www.wikidata.org/wiki/apartment,equivalent,0.63947916,Match based on Embeddings
+http://schema.org/Pharmacy,http://www.wikidata.org/wiki/pharmacy,equivalent,0.61929977,Match based on Embeddings
+http://schema.org/TaxiStand,http://www.wikidata.org/wiki/taxi_rank,equivalent,0.5630781,Match based on Embeddings
+http://schema.org/InfectiousDisease,http://www.wikidata.org/wiki/infectious_disease,equivalent,0.58290905,Match based on Embeddings
+http://schema.org/Podiatric,http://www.wikidata.org/wiki/podiatry,equivalent,0.5962007,Match based on Embeddings
+http://schema.org/PsychologicalTreatment,http://www.wikidata.org/wiki/psychological_treatment,equivalent,0.58074224,Match based on Embeddings
+http://schema.org/Date,http://www.wikidata.org/wiki/date,equivalent,0.6256279,Match based on Embeddings
+http://schema.org/Beach,http://www.wikidata.org/wiki/beach,equivalent,0.62987405,Match based on Embeddings
+http://schema.org/Duration,http://www.wikidata.org/wiki/duration,equivalent,0.6309876,Match based on Embeddings
+http://schema.org/Vein,http://www.wikidata.org/wiki/vein,equivalent,0.6470142,Match based on Embeddings
+http://schema.org/ToyStore,http://www.wikidata.org/wiki/toy_store,equivalent,0.6372147,Match based on Embeddings
+http://schema.org/MovieTheater,http://www.wikidata.org/wiki/movie_theater,equivalent,0.5688171,Match based on Embeddings
+http://schema.org/PaymentCard,http://www.wikidata.org/wiki/payment_card,equivalent,0.62378836,Match based on Embeddings
+http://schema.org/MedicalDevice,http://www.wikidata.org/wiki/medical_device,equivalent,0.6014631,Match based on Embeddings
+http://schema.org/Cemetery,http://www.wikidata.org/wiki/cemetery,equivalent,0.62722385,Match based on Embeddings
+http://schema.org/WebSite,http://www.wikidata.org/wiki/website,equivalent,0.5990635,Match based on Embeddings
+http://schema.org/MiddleSchool,http://www.wikidata.org/wiki/middle_school,equivalent,0.6062101,Match based on Embeddings
+http://schema.org/Comment,http://www.wikidata.org/wiki/comment,equivalent,0.62491906,Match based on Embeddings
+http://schema.org/NailSalon,http://www.wikidata.org/wiki/nail_salon,equivalent,0.60201997,Match based on Embeddings
+http://schema.org/MobileApplication,http://www.wikidata.org/wiki/mobile_app,equivalent,0.57592946,Match based on Embeddings
+http://schema.org/InsuranceAgency,http://www.wikidata.org/wiki/insurance_agency,equivalent,0.5890825,Match based on Embeddings
+http://schema.org/VeterinaryCare,http://www.wikidata.org/wiki/veterinary_medicine,equivalent,0.5777004,Match based on Embeddings
+http://schema.org/LandmarksOrHistoricalBuildings,http://www.wikidata.org/wiki/landmark,equivalent,0.57500696,Match based on Embeddings
+http://schema.org/Synagogue,http://www.wikidata.org/wiki/synagogue,equivalent,0.61055416,Match based on Embeddings
+http://schema.org/FinancialService,http://www.wikidata.org/wiki/financial_services,equivalent,0.5762596,Match based on Embeddings
+http://schema.org/Corporation,http://www.wikidata.org/wiki/government_organization,related,0.5333,"While the similarity score is high for all three candidates, I choose the government_organization class as it has a higher semantic fit with the source class. Both are types of organizations that operate on a larger scale, and government_organization encompasses many aspects of corporate activity. The relation between them can be considered related, as they share some common characteristics but are not exactly equivalent."
+http://schema.org/BusStop,http://www.wikidata.org/wiki/bus_stop,equivalent,0.5848038,Match based on Embeddings
+http://schema.org/BowlingAlley,http://www.wikidata.org/wiki/bowling_alley,equivalent,0.57043445,Match based on Embeddings
+http://schema.org/HinduTemple,http://www.wikidata.org/wiki/Hindu_temple,equivalent,0.5620768,Match based on Embeddings
+http://schema.org/Motel,http://www.wikidata.org/wiki/motel,equivalent,0.63443357,Match based on Embeddings
+http://schema.org/Pond,http://www.wikidata.org/wiki/Pond,equivalent,0.64583623,Match based on Embeddings
+http://schema.org/MusicRelease,N/A,N/A,0.0,"LLM failed to parse response. Raw: Based on the provided information, I would select the best semantic match for the source class as follows:
+
+[
+{
+""source_class_uri"": http://schema.org/MusicRelease,
+""target_class_uri"": http://www.wikid"
+http://schema.org/VisualArtwork,http://www.wikidata.org/wiki/visual_artwork,equivalent,0.59332794,Match based on Embeddings
+http://schema.org/CreativeWork,http://www.wikidata.org/wiki/creative_work,equivalent,0.6035753,Match based on Embeddings
+http://schema.org/MedicalCode,http://www.wikidata.org/wiki/medical_code,equivalent,0.63743913,Match based on Embeddings
+http://schema.org/Energy,http://www.wikidata.org/wiki/Energy,equivalent,0.6349077,Match based on Embeddings
+http://schema.org/Dataset,http://www.wikidata.org/wiki/data_set,equivalent,0.5744654,Match based on Embeddings
+http://schema.org/Number,http://www.wikidata.org/wiki/number,equivalent,0.6235977,Match based on Embeddings
+http://schema.org/Plumber,http://www.wikidata.org/wiki/plumber,equivalent,0.64058363,Match based on Embeddings
+http://schema.org/SkiResort,http://www.wikidata.org/wiki/ski_resort,equivalent,0.57624006,Match based on Embeddings
+http://schema.org/Canal,http://www.wikidata.org/wiki/canal,equivalent,0.6401472,Match based on Embeddings
+http://schema.org/WinAction,N/A,N/A,0.0,"LLM failed to parse response. Raw: Based on the given information, I would select the best semantic match for the source class as follows:
+
+[
+{
+""source_class_uri"": http://schema.org/WinAction,
+""target_class_uri"": http://www.wikidata.or"
+http://schema.org/BlogPosting,http://www.wikidata.org/wiki/blog_post,equivalent,0.5729676,Match based on Embeddings
+http://schema.org/Painting,http://www.wikidata.org/wiki/painting,equivalent,0.6336539,Match based on Embeddings
+http://schema.org/RealEstateAgent,http://www.wikidata.org/wiki/real_estate_broker,equivalent,0.57397276,Match based on Embeddings
+http://schema.org/DataFeed,http://www.wikidata.org/wiki/data_feed,equivalent,0.6165335,Match based on Embeddings
+http://schema.org/Movie,http://www.wikidata.org/wiki/film,equivalent,0.55757564,Match based on Embeddings
+http://schema.org/Distillery,http://www.wikidata.org/wiki/distillery,equivalent,0.6433343,Match based on Embeddings
+http://schema.org/Bakery,http://www.wikidata.org/wiki/bakery,equivalent,0.6291487,Match based on Embeddings
+http://schema.org/Store,http://www.wikidata.org/wiki/outlet_store,equivalent,0.5678,"The context of both classes aligns well, with 'store' being a common term for both. The similarity score is also high, indicating that the ontology structure and relationships are similar between the two. Considering both factors, I conclude that the target class 'outlet_store' is an equivalent match to the source class."
+http://schema.org/PlaceOfWorship,http://www.wikidata.org/wiki/place_of_worship,equivalent,0.5907081,Match based on Embeddings
+http://schema.org/Periodical,http://www.wikidata.org/wiki/magazine,equivalent,0.56258076,Match based on Embeddings
+http://schema.org/Country,http://www.wikidata.org/wiki/country,equivalent,0.6187808,Match based on Embeddings
+http://schema.org/LakeBodyOfWater,http://www.wikidata.org/wiki/lake,equivalent,0.5779474,Match based on Embeddings
+http://schema.org/Series,http://www.wikidata.org/wiki/series,equivalent,0.6253436,Match based on Embeddings
+http://schema.org/Book,http://www.wikidata.org/wiki/book,equivalent,0.6256551,Match based on Embeddings
+http://schema.org/PublicSwimmingPool,http://www.wikidata.org/wiki/public_swimming_pool,equivalent,0.590441,Match based on Embeddings
+http://schema.org/BusStation,http://www.wikidata.org/wiki/bus_station,equivalent,0.59476787,Match based on Embeddings
+http://schema.org/Mass,http://www.wikidata.org/wiki/mass,equivalent,0.6417844,Match based on Embeddings
+http://schema.org/Physician,http://www.wikidata.org/wiki/physician,equivalent,0.63765836,Match based on Embeddings
+http://schema.org/TravelAgency,http://www.wikidata.org/wiki/travel_agency,equivalent,0.59750503,Match based on Embeddings
+http://schema.org/Airline,http://www.wikidata.org/wiki/airline,equivalent,0.6293614,Match based on Embeddings
+http://schema.org/School,http://www.wikidata.org/wiki/school,equivalent,0.62195295,Match based on Embeddings
+http://schema.org/SelfStorage,http://www.wikidata.org/wiki/self_storage,equivalent,0.60281026,Match based on Embeddings
+http://schema.org/AnimalShelter,http://www.wikidata.org/wiki/animal_shelter,equivalent,0.5716393,Match based on Embeddings
+http://schema.org/OceanBodyOfWater,http://www.wikidata.org/wiki/ocean,equivalent,0.5705916,Match based on Embeddings
+http://schema.org/CityHall,http://www.wikidata.org/wiki/city_hall,equivalent,0.60233176,Match based on Embeddings
+http://schema.org/Motorcycle,http://www.wikidata.org/wiki/motorcycle,equivalent,0.63770676,Match based on Embeddings
+http://schema.org/HealthClub,http://www.wikidata.org/wiki/health_club,equivalent,0.6073115,Match based on Embeddings
+http://schema.org/Volcano,http://www.wikidata.org/wiki/volcano,equivalent,0.63905454,Match based on Embeddings
+http://schema.org/EPRelease,http://www.wikidata.org/wiki/release,equivalent,0.5601,"The target class 'release' has a high similarity score and is semantically equivalent to the source class 'EPRelease'. Both classes represent a release of music, making them identical in meaning."
+http://schema.org/SurgicalProcedure,http://www.wikidata.org/wiki/surgical_procedure,equivalent,0.59982985,Match based on Embeddings
+http://schema.org/TelevisionStation,http://www.wikidata.org/wiki/television_station,equivalent,0.59354985,Match based on Embeddings
+http://schema.org/TVEpisode,http://www.wikidata.org/wiki/television_series_episode,equivalent,0.5684212,Match based on Embeddings
+http://schema.org/TVSeries,http://www.wikidata.org/wiki/television_series,equivalent,0.5948103,Match based on Embeddings
+http://schema.org/Museum,http://www.wikidata.org/wiki/museum,equivalent,0.6276751,Match based on Embeddings
+http://schema.org/ComicStory,http://www.wikidata.org/wiki/comics,equivalent,0.5876609,Match based on Embeddings
+http://schema.org/Menu,http://www.wikidata.org/wiki/menu,equivalent,0.6166278,Match based on Embeddings
+http://schema.org/FALSE,http://www.wikidata.org/wiki/false,equivalent,0.6065034,Match based on Embeddings
+http://schema.org/CampingPitch,http://www.wikidata.org/wiki/campsite,equivalent,0.5663207,Match based on Embeddings
+http://schema.org/TrainStation,http://www.wikidata.org/wiki/railway_station,equivalent,0.5826958,Match based on Embeddings
+http://schema.org/RVPark,http://www.wikidata.org/wiki/campground,equivalent,0.5597,"Although the similarity score is not extremely high, the target class 'campground' is semantically the most fitting match considering both context and score. Both classes share similar characteristics, such as providing camping facilities, which aligns with their labels and contexts."
+http://schema.org/Room,http://www.wikidata.org/wiki/room,equivalent,0.6309221,Match based on Embeddings
+http://schema.org/Report,http://www.wikidata.org/wiki/report,equivalent,0.62050974,Match based on Embeddings
+http://schema.org/AutoBodyShop,http://www.wikidata.org/wiki/auto_body_shop,equivalent,0.61514825,Match based on Embeddings
+http://schema.org/Mosque,http://www.wikidata.org/wiki/mosque,equivalent,0.62477696,Match based on Embeddings
+http://schema.org/Campground,http://www.wikidata.org/wiki/campground,equivalent,0.62799424,Match based on Embeddings
+http://schema.org/Emergency,http://www.wikidata.org/wiki/emergency,equivalent,0.6313925,Match based on Embeddings
+http://schema.org/MedicalGuideline,http://www.wikidata.org/wiki/medical_guideline,equivalent,0.60040975,Match based on Embeddings
+http://schema.org/Audience,http://www.wikidata.org/wiki/audience,equivalent,0.63012433,Match based on Embeddings
+http://schema.org/MusicVenue,http://www.wikidata.org/wiki/music_venue,equivalent,0.5712866,Match based on Embeddings
+http://schema.org/VitalSign,http://www.wikidata.org/wiki/vital_signs,equivalent,0.5775689,Match based on Embeddings
+http://schema.org/SoftwareApplication,http://www.wikidata.org/wiki/web_application,equivalent,0.5659,"The similarity score is high, and the semantic fit between contexts is strong. The target class 'web application' is closely related to software applications that can be accessed through a web browser, making it an equivalent match."
+http://schema.org/Message,http://www.wikidata.org/wiki/message,equivalent,0.62427586,Match based on Embeddings
+http://schema.org/GolfCourse,http://www.wikidata.org/wiki/golf_course,equivalent,0.60062176,Match based on Embeddings
+http://schema.org/MedicalTrial,http://www.wikidata.org/wiki/medical_trial,equivalent,0.57371914,Match based on Embeddings
+http://schema.org/Crematorium,http://www.wikidata.org/wiki/crematorium,equivalent,0.6399471,Match based on Embeddings
+http://schema.org/PublicToilet,http://www.wikidata.org/wiki/public_toilet,equivalent,0.5194,"The similarity score is high, but what's more important is the semantic fit between contexts. Both source and target classes refer to public toilets, making them equivalent."
+http://schema.org/Course,http://www.wikidata.org/wiki/course,equivalent,0.6227472,Match based on Embeddings
+http://schema.org/PostOffice,http://www.wikidata.org/wiki/post_office,equivalent,0.5619009,Match based on Embeddings
+http://schema.org/Optometric,http://www.wikidata.org/wiki/optometry,equivalent,0.61334413,Match based on Embeddings
+http://schema.org/Hospital,http://www.wikidata.org/wiki/hospital,equivalent,0.6224855,Match based on Embeddings
+http://schema.org/Demand,http://www.wikidata.org/wiki/demand,equivalent,0.6314424,Match based on Embeddings
+http://schema.org/RoofingContractor,http://www.wikidata.org/wiki/Roofing_contractor,equivalent,0.6152799,Match based on Embeddings
+http://schema.org/Optician,http://www.wikidata.org/wiki/optician,equivalent,0.6448009,Match based on Embeddings
+http://schema.org/Quotation,http://www.wikidata.org/wiki/quotation,equivalent,0.6118779,Match based on Embeddings
+http://schema.org/Car,http://www.wikidata.org/wiki/passenger_car,equivalent,0.58873665,Match based on Embeddings
+http://schema.org/IceCreamShop,http://www.wikidata.org/wiki/ice_cream_parlor,equivalent,0.56693786,Match based on Embeddings
+http://schema.org/Drug,http://www.wikidata.org/wiki/drug,equivalent,0.64076525,Match based on Embeddings
+http://schema.org/NewsArticle,http://www.wikidata.org/wiki/news_article,equivalent,0.58318406,Match based on Embeddings
+http://schema.org/Barcode,http://www.wikidata.org/wiki/barcode,equivalent,0.6480761,Match based on Embeddings
+http://schema.org/Mountain,http://www.wikidata.org/wiki/mountain,equivalent,0.6383103,Match based on Embeddings
+http://schema.org/PublicationVolume,http://www.wikidata.org/wiki/scholarly_article,equivalent,0.5098,"The target class 'scholarly_article' is semantically equivalent to the source class 'PublicationVolume'. Both represent a unit of publication or written work, such as an article in a journal or a book chapter. The similarity score is high (0.5098) and the contextual meaning aligns well with the source class. While other candidate matches have slightly higher scores, 'scholarly_article' provides the best overall match considering both numerical similarity and contextual meaning."
+http://schema.org/HighSchool,http://www.wikidata.org/wiki/high_school,equivalent,0.61503637,Match based on Embeddings
+http://schema.org/Casino,http://www.wikidata.org/wiki/casino,equivalent,0.6410978,Match based on Embeddings
+http://schema.org/Time,http://www.wikidata.org/wiki/Timestamp,equivalent,0.5476461,Match based on Embeddings
+http://schema.org/EventVenue,http://www.wikidata.org/wiki/event_venue,equivalent,0.561221,Match based on Embeddings
+http://schema.org/Nursing,http://www.wikidata.org/wiki/nursing,equivalent,0.5987863,Match based on Embeddings
+http://schema.org/Product,http://www.wikidata.org/wiki/product,equivalent,0.6173783,Match based on Embeddings
+http://schema.org/PrimaryCare,http://www.wikidata.org/wiki/primary_care,equivalent,0.6221833,Match based on Embeddings
+http://schema.org/BusOrCoach,http://www.wikidata.org/wiki/bus,equivalent,0.53518444,Match based on Embeddings
+http://schema.org/WorkersUnion,http://www.wikidata.org/wiki/labor_union,equivalent,0.6013187,Match based on Embeddings
+http://schema.org/BuddhistTemple,http://www.wikidata.org/wiki/Buddhist_temple,equivalent,0.5580838,Match based on Embeddings
+http://schema.org/CafeOrCoffeeShop,http://www.wikidata.org/wiki/coffeehouse,equivalent,0.5475773,Match based on Embeddings
+http://schema.org/SoftwareSourceCode,http://www.wikidata.org/wiki/source_code,equivalent,0.5744214,Match based on Embeddings
+http://schema.org/ArtGallery,http://www.wikidata.org/wiki/art_gallery,equivalent,0.60377634,Match based on Embeddings
+http://schema.org/CatholicChurch,http://www.wikidata.org/wiki/Catholic_church_building,equivalent,0.58242893,Match based on Embeddings
+http://schema.org/Oncologic,http://www.wikidata.org/wiki/oncology,equivalent,0.56554556,Match based on Embeddings
+http://schema.org/TouristAttraction,http://www.wikidata.org/wiki/tourist_attraction,equivalent,0.5841207,Match based on Embeddings
+http://schema.org/VideoGame,http://www.wikidata.org/wiki/video_game,equivalent,0.6250549,Match based on Embeddings
+http://schema.org/AccountingService,http://www.wikidata.org/wiki/accounting_services,equivalent,0.59738797,Match based on Embeddings
+http://schema.org/ProductModel,http://www.wikidata.org/wiki/model,equivalent,0.58038,Match based on Embeddings
+http://schema.org/Resort,http://www.wikidata.org/wiki/resort,equivalent,0.6341587,Match based on Embeddings
+http://schema.org/Preschool,http://www.wikidata.org/wiki/preschool,equivalent,0.6068363,Match based on Embeddings
+http://schema.org/FinancialProduct,http://www.wikidata.org/wiki/financial_product,equivalent,0.61589396,Match based on Embeddings
+http://schema.org/GovernmentBuilding,http://www.wikidata.org/wiki/government_building,equivalent,0.5974212,Match based on Embeddings
+http://schema.org/SportsTeam,http://www.wikidata.org/wiki/sports_team,equivalent,0.6079723,Match based on Embeddings
+http://schema.org/PerformingArtsTheater,http://www.wikidata.org/wiki/theatre_troupe,equivalent,0.5436,"Both classes have similar labels and types ('class' in Wikidata). Theatre troupe is a more specific type of performing arts theatre, aligning with the source class's context. Although music venue has a slightly higher score, it doesn't capture the same essence as theatre troupe."
+http://schema.org/Suite,http://www.wikidata.org/wiki/suite,equivalent,0.62810946,Match based on Embeddings
+http://schema.org/Action,http://www.wikidata.org/wiki/action,equivalent,0.62975574,Match based on Embeddings
+http://schema.org/Thesis,http://www.wikidata.org/wiki/thesis,equivalent,0.6312308,Match based on Embeddings
+http://schema.org/BookStore,http://www.wikidata.org/wiki/bookstore,equivalent,0.61606896,Match based on Embeddings
+http://schema.org/StadiumOrArena,http://www.wikidata.org/wiki/stadium,equivalent,0.5866248,Match based on Embeddings
+http://schema.org/Continent,http://www.wikidata.org/wiki/continent,equivalent,0.6384765,Match based on Embeddings
+http://schema.org/SingleRelease,http://www.wikidata.org/wiki/release,equivalent,0.5571,"The release concept is more closely related to SingleRelease than single or product, aligning with the context and having a high numerical similarity score."
+http://schema.org/Florist,http://www.wikidata.org/wiki/florist,equivalent,0.6391239,Match based on Embeddings
+http://schema.org/Muscle,http://www.wikidata.org/wiki/muscle_organ,equivalent,0.58438224,Match based on Embeddings
+http://schema.org/Map,http://www.wikidata.org/wiki/map,equivalent,0.61759245,Match based on Embeddings
+http://schema.org/Invoice,http://www.wikidata.org/wiki/invoice,equivalent,0.62790334,Match based on Embeddings
+http://schema.org/AnatomicalStructure,http://www.wikidata.org/wiki/anatomical_structure,equivalent,0.63695014,Match based on Embeddings
+http://schema.org/MedicalSpecialty,http://www.wikidata.org/wiki/medical_specialty,equivalent,0.582189,Match based on Embeddings
+http://schema.org/MusicGroup,http://www.wikidata.org/wiki/musical_group,equivalent,0.6168139,Match based on Embeddings
+http://schema.org/Hotel,http://www.wikidata.org/wiki/hotel,equivalent,0.6299469,Match based on Embeddings
+http://schema.org/Boolean,http://www.wikidata.org/wiki/boolean_data_type,equivalent,0.56153387,Match based on Embeddings
+http://schema.org/ShoppingCenter,http://www.wikidata.org/wiki/shopping_center,equivalent,0.5992031,Match based on Embeddings
+http://schema.org/CreditCard,http://www.wikidata.org/wiki/credit_card,equivalent,0.6261653,Match based on Embeddings
+http://schema.org/Joint,http://www.wikidata.org/wiki/joint,equivalent,0.6386249,Match based on Embeddings
+http://schema.org/RadiationTherapy,http://www.wikidata.org/wiki/radiation_therapy,equivalent,0.62156975,Match based on Embeddings
+http://schema.org/ProfessionalService,http://www.wikidata.org/wiki/professional_services,equivalent,0.6019245,Match based on Embeddings
+http://schema.org/SuperficialAnatomy,http://www.wikidata.org/wiki/Superficial_anatomy,equivalent,0.63145334,Match based on Embeddings
+http://schema.org/AutomatedTeller,http://www.wikidata.org/wiki/article,more general,0.4913,"While the top candidate match, http://www.wikidata.org/wiki/data_feed, has a higher similarity score, it is not semantically more appropriate as an automated teller machine does not typically provide data feeds. The 'article' class is more general and encompasses news articles, which are often related to automated tellers. This match makes sense in the context of information dissemination, where an automated teller might display relevant news or articles."
+http://schema.org/Language,http://www.wikidata.org/wiki/language,equivalent,0.6198238,Match based on Embeddings
+http://schema.org/Gynecologic,http://www.wikidata.org/wiki/gynecology,equivalent,0.5926599,Match based on Embeddings
+http://schema.org/AudioObject,http://www.wikidata.org/wiki/audio_file,equivalent,0.5646137,Match based on Embeddings
+http://schema.org/Game,http://www.wikidata.org/wiki/game,equivalent,0.6373224,Match based on Embeddings
+http://schema.org/Attorney,http://www.wikidata.org/wiki/lawyer,equivalent,0.5845213,Match based on Embeddings
+http://schema.org/Organization,http://www.wikidata.org/wiki/organization,equivalent,0.6384636,Match based on Embeddings
+http://schema.org/Church,http://www.wikidata.org/wiki/church_building,equivalent,0.59287614,Match based on Embeddings
+http://schema.org/Festival,http://www.wikidata.org/wiki/festival,equivalent,0.625441,Match based on Embeddings
+http://schema.org/DietarySupplement,http://www.wikidata.org/wiki/dietary_supplement,equivalent,0.5850868,Match based on Embeddings
+http://schema.org/MedicalStudy,http://www.wikidata.org/wiki/medical_study,equivalent,0.56657135,Match based on Embeddings
+http://schema.org/PublicHealth,http://www.wikidata.org/wiki/public_health,equivalent,0.5974297,Match based on Embeddings
+http://schema.org/Bone,http://www.wikidata.org/wiki/bone,equivalent,0.64369756,Match based on Embeddings
+http://schema.org/AmusementPark,http://www.wikidata.org/wiki/amusement_park,equivalent,0.63393474,Match based on Embeddings
+http://schema.org/PlasticSurgery,http://www.wikidata.org/wiki/plastic_surgery,equivalent,0.59094566,Match based on Embeddings
+http://schema.org/SeaBodyOfWater,http://www.wikidata.org/wiki/sea,equivalent,0.56150556,Match based on Embeddings
+http://schema.org/DayOfWeek,http://www.wikidata.org/wiki/day_of_the_week,equivalent,0.622208,Match based on Embeddings
+http://schema.org/MusicComposition,http://www.wikidata.org/wiki/musical_composition,equivalent,0.5902742,Match based on Embeddings
+http://schema.org/OccupationalTherapy,http://www.wikidata.org/wiki/occupational_therapy,equivalent,0.6186365,Match based on Embeddings
+http://schema.org/ShoeStore,http://www.wikidata.org/wiki/shoe_store,equivalent,0.6373094,Match based on Embeddings
+http://schema.org/RadioStation,http://www.wikidata.org/wiki/radio_station,equivalent,0.55307335,Match based on Embeddings
+http://schema.org/Vessel,http://www.wikidata.org/wiki/vessel,equivalent,0.6366795,Match based on Embeddings
+http://schema.org/Airport,http://www.wikidata.org/wiki/airport,equivalent,0.6298391,Match based on Embeddings
+http://schema.org/RecyclingCenter,http://www.wikidata.org/wiki/recycling_center,equivalent,0.6284317,Match based on Embeddings
+http://schema.org/City,http://www.wikidata.org/wiki/city,equivalent,0.6230752,Match based on Embeddings
+http://schema.org/Brewery,http://www.wikidata.org/wiki/brewery,equivalent,0.6360624,Match based on Embeddings
+http://schema.org/Patient,http://www.wikidata.org/wiki/patient,equivalent,0.63778865,Match based on Embeddings
+http://schema.org/Playground,http://www.wikidata.org/wiki/playground,equivalent,0.63840204,Match based on Embeddings
+http://schema.org/RiverBodyOfWater,http://www.wikidata.org/wiki/river,equivalent,0.56820863,Match based on Embeddings
+http://schema.org/MedicalSymptom,http://www.wikidata.org/wiki/symptom,equivalent,0.61284703,Match based on Embeddings
+http://schema.org/ScholarlyArticle,http://www.wikidata.org/wiki/scholarly_article,equivalent,0.5950873,Match based on Embeddings
+http://schema.org/MusicAlbum,http://www.wikidata.org/wiki/musical_group,related,0.5517,"While the similarity score suggests a strong connection, I chose musical_group as the best match because it captures the essence of a music album being part of a larger group or collective. This semantic fit is more important than the slightly lower similarity score compared to the other two options."
+http://schema.org/GasStation,http://www.wikidata.org/wiki/petrol_station,equivalent,0.5586354,Match based on Embeddings
+http://schema.org/NutritionInformation,http://www.wikidata.org/wiki/nutrition_information,equivalent,0.6379446,Match based on Embeddings
+http://schema.org/EmergencyService,http://www.wikidata.org/wiki/emergency_service,equivalent,0.5997559,Match based on Embeddings
+http://schema.org/WebApplication,http://www.wikidata.org/wiki/web_application,equivalent,0.59259605,Match based on Embeddings
+http://schema.org/AutoRental,http://www.wikidata.org/wiki/passenger_car,equivalent,0.5238,"Although the similarity score is not extremely high, the target class 'passenger_car' semantically aligns well with the source class 'AutoRental', as both refer to vehicles that can be rented or used for transportation. The contextual meaning of 'autorental' and 'passenger_car' also suggests a strong correspondence."
+http://schema.org/Artery,http://www.wikidata.org/wiki/artery,equivalent,0.6523952,Match based on Embeddings
+http://schema.org/LegalService,http://www.wikidata.org/wiki/legal_service,equivalent,0.5781832,Match based on Embeddings
+http://schema.org/Atlas,http://www.wikidata.org/wiki/atlas,equivalent,0.6394368,Match based on Embeddings
+http://schema.org/SportsOrganization,http://www.wikidata.org/wiki/sports_organization,equivalent,0.6121886,Match based on Embeddings
+http://schema.org/Restaurant,http://www.wikidata.org/wiki/restaurant,equivalent,0.63899237,Match based on Embeddings
+http://schema.org/MedicalProcedure,http://www.wikidata.org/wiki/medical_procedure,equivalent,0.594021,Match based on Embeddings
+http://schema.org/GeneralContractor,http://www.wikidata.org/wiki/general_contractor,equivalent,0.6183135,Match based on Embeddings
+http://schema.org/MusicPlaylist,http://www.wikidata.org/wiki/playlist,equivalent,0.6248986,Match based on Embeddings
+http://schema.org/GameServer,http://www.wikidata.org/wiki/game_server,equivalent,0.6193171,Match based on Embeddings
+http://schema.org/MedicalTest,http://www.wikidata.org/wiki/medical_test,equivalent,0.6140727,Match based on Embeddings
+http://schema.org/EmploymentAgency,http://www.wikidata.org/wiki/employment_agency,equivalent,0.5961698,Match based on Embeddings
+http://schema.org/URL,N/A,N/A,0.0,"LLM failed to parse response. Raw: Based on the provided information, I would select the following as the best semantic match:
+
+[
+{
+""source_class_uri"": http://schema.org/URL,
+""target_class_uri"": http://www.wikidata.org/wiki/web_page,
+"""
+http://schema.org/Substance,http://www.wikidata.org/wiki/substance,equivalent,0.64310765,Match based on Embeddings
+http://schema.org/MedicalOrganization,http://www.wikidata.org/wiki/medical_organization,equivalent,0.615805,Match based on Embeddings
+http://schema.org/BedAndBreakfast,http://www.wikidata.org/wiki/bed_and_breakfast,equivalent,0.5428252,Match based on Embeddings
+http://schema.org/PaymentMethod,http://www.wikidata.org/wiki/payment_method,equivalent,0.6086209,Match based on Embeddings
+http://schema.org/Audiobook,http://www.wikidata.org/wiki/audiobook,equivalent,0.6178472,Match based on Embeddings
+http://schema.org/MedicalClinic,http://www.wikidata.org/wiki/clinic,equivalent,0.5490547,Match based on Embeddings
+http://schema.org/Conversation,http://www.wikidata.org/wiki/conversation,equivalent,0.6313714,Match based on Embeddings
+http://schema.org/Text,http://www.wikidata.org/wiki/string,equivalent,0.5579151,Match based on Embeddings
+http://schema.org/PoliceStation,http://www.wikidata.org/wiki/police_station,equivalent,0.62157524,Match based on Embeddings
+http://schema.org/Distance,http://www.wikidata.org/wiki/distance,equivalent,0.6297158,Match based on Embeddings
+http://schema.org/ChildCare,http://www.wikidata.org/wiki/childcare_center,equivalent,0.5971297,Match based on Embeddings
+http://schema.org/ComedyClub,http://www.wikidata.org/wiki/comedy_club,equivalent,0.6190969,Match based on Embeddings
+http://schema.org/Geriatric,http://www.wikidata.org/wiki/geriatrics,equivalent,0.5947014,Match based on Embeddings
+http://schema.org/Brand,http://www.wikidata.org/wiki/brand,equivalent,0.6229035,Match based on Embeddings
+http://schema.org/WebPage,http://www.wikidata.org/wiki/web_page,equivalent,0.60625476,Match based on Embeddings
+http://schema.org/Hostel,http://www.wikidata.org/wiki/hostel,equivalent,0.61710614,Match based on Embeddings
+http://schema.org/TextDigitalDocument,http://www.wikidata.org/wiki/text_file,equivalent,0.54825354,Match based on Embeddings
+http://schema.org/Electrician,http://www.wikidata.org/wiki/electrician,equivalent,0.6403929,Match based on Embeddings
+http://schema.org/Midwifery,http://www.wikidata.org/wiki/midwifery,equivalent,0.6272386,Match based on Embeddings
+http://schema.org/Answer,http://www.wikidata.org/wiki/Answer,equivalent,0.63235414,Match based on Embeddings
+http://schema.org/LiquorStore,http://www.wikidata.org/wiki/liquor_store,equivalent,0.62616456,Match based on Embeddings
+http://schema.org/Permit,http://www.wikidata.org/wiki/park,related,0.5211,"While the similarity score is high, the most compelling reason for choosing this match is that both 'permit' and 'park' share a context of allowing or controlling access to something (e.g., a park). This contextual connection makes it a more suitable match than the other candidates."
+http://schema.org/HousePainter,http://www.wikidata.org/wiki/house,related,0.5386,"The target class 'house' is semantically related to the source class 'HousePainter', as a house can be painted by a housepainter. Although there may not be an exact equivalence, this match captures the core concept of the source class."
+http://schema.org/ContactPoint,http://www.wikidata.org/wiki/contact_point,equivalent,0.6031533,Match based on Embeddings
+http://schema.org/Library,http://www.wikidata.org/wiki/library,equivalent,0.597062,Match based on Embeddings
+http://schema.org/MeetingRoom,http://www.wikidata.org/wiki/conference_room,equivalent,0.59207326,Match based on Embeddings
+http://schema.org/RadioSeries,http://www.wikidata.org/wiki/radio_series,equivalent,0.58059675,Match based on Embeddings
+http://schema.org/SubwayStation,http://www.wikidata.org/wiki/metro_station,equivalent,0.58639175,Match based on Embeddings
+http://schema.org/TRUE,http://www.wikidata.org/wiki/true,equivalent,0.61041474,Match based on Embeddings
+http://schema.org/House,http://www.wikidata.org/wiki/house,equivalent,0.6279322,Match based on Embeddings
+http://schema.org/Waterfall,http://www.wikidata.org/wiki/waterfall,equivalent,0.6380272,Match based on Embeddings
+http://schema.org/NightClub,http://www.wikidata.org/wiki/nightclub,equivalent,0.6351715,Match based on Embeddings
+http://schema.org/BloodTest,http://www.wikidata.org/wiki/blood_test,equivalent,0.62583584,Match based on Embeddings
+http://schema.org/TennisComplex,http://www.wikidata.org/wiki/tennis_venue,equivalent,0.58751875,Match based on Embeddings
+http://schema.org/Zoo,http://www.wikidata.org/wiki/zoo,equivalent,0.6384363,Match based on Embeddings

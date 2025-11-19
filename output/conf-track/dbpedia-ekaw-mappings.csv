@@ -1,0 +1,14 @@
+source_class_uri,target_class_uri,semantic_relation,similarity_score,justification
+http://dbpedia.org/ontology/Country,http://confOf#Country,equivalent,0.48292857,Match based on Embeddings
+http://dbpedia.org/ontology/employer,http://confOf#employedBy,equivalent,0.57508814,Match based on Embeddings
+http://dbpedia.org/ontology/City,http://confOf#City,equivalent,0.5282374,Match based on Embeddings
+http://dbpedia.org/ontology/AcademicConference,N/A,N/A,0.0,"LLM failed to parse response. Raw: Based on the provided information, I would select the following as the best semantic match for the source class:
+
+[
+{
+""source_class_uri"": http://dbpedia.org/ontology/AcademicConference,
+""target_class_"
+http://dbpedia.org/ontology/Organisation,http://confOf#Organization,equivalent,0.5176767,Match based on Embeddings
+http://dbpedia.org/ontology/University,http://confOf#University,equivalent,0.54580337,Match based on Embeddings
+http://dbpedia.org/ontology/Company,http://confOf#Company,equivalent,0.54843676,Match based on Embeddings
+http://dbpedia.org/ontology/Scientist,http://confOf#Science_Worker,equivalent,0.5334889,Match based on Embeddings
