@@ -70,7 +70,7 @@ For npm
 npm install
 ```
 ### Usage and Examples
-To set up multi-layered DT, we organise data, model and metamodel in concrete abstraction layers using construct offered by **JSMF**. We set up DT model-metamodel layer for the air quality use case with data, run the following file:
+To set up multi-layered DT, we organise data, model and metamodel in concrete abstraction layers using construct offered by **JSMF**. To set up DT model-metamodel layer for the air quality use case with data, run the following file:
 ```bash
 cd model-metamodel-layer
 node model-metamodel.js      
