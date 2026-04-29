@@ -70,7 +70,7 @@ For npm
 npm install
 ```
 ### Usage and Examples
-To set up the DT model-metamodel layer for the air quality use case with data, run the following file:
+To set up multi-layered DT, we organise data, model and metamodel in concrete abstraction layers using construct offered by **JSMF**. We set up DT model-metamodel layer for the air quality use case with data, run the following file:
 ```bash
 cd model-metamodel-layer
 node model-metamodel.js      
@@ -101,7 +101,7 @@ airquality_model.setModellingElements([controller1]);
 const res = discoverer.archetypalDiscovery("Controller", controller1, airquality.Controller)
 discoverer.updateClass(airquality.Controller,res)    
 ```
-We set up DT ontology layer and map metamodel to traget **[Brick](https://brickschema.org/)** ontology, for air quality usecase using **SSM-OM**. Please install **[ollama](https://ollama.com/download)** and run ```llama3``` prior to executing the following file:
+We then semantically ground DT metamodel through alignment and mapping. We set up DT ontology layer and map metamodel to traget **[Brick](https://brickschema.org/)** ontology, for air quality usecase using **SSM-OM**. Please install **[ollama](https://ollama.com/download)** and run ```llama3``` prior to executing the following file:
 ```bash
 cd ontology-layer
 python metamodel-ontology-matching.py     
