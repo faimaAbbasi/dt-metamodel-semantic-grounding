@@ -1,6 +1,6 @@
 ## Semantic Grounding of Digital Twin Metamodel Using RDF Graphs 
 
-This repository demonstrates **semantic grounding (alignment and mapping) of digital twin (DT) metamodels using RDF graphs**. We consider **a multi-layered digital twin (DT)** architecture and adress hetrigeneity challenge by introducing a semantic grounding pipeline to enable consistent and reliable interoperability between different abstraction layers. Submitted to a conference, it provides source code, datasets, and documentation for the air quality use case set up.
+This repository demonstrates **semantic grounding (alignment and mapping) of digital twin (DT) metamodels using RDF graphs**. We consider **a multi-layered digital twin (DT)** architecture and adress hetrogeniety challenge by introducing a semantic grounding pipeline to enable consistent and reliable interoperability between different abstraction layers. Submitted to a conference, it provides source code, datasets, and documentation for the air quality use case set up.
 
 It also includes reproducible experiments for:
 
