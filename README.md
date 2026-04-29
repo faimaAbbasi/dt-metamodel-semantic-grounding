@@ -42,8 +42,8 @@ Follow are steps to set up and run this project locally.
 
 #### 1. Clone Repository
 ```bash
-git clone https://github.com/faimaAbbasi/dt-model-alignment.git
-cd dt-model-alignment
+git clone https://github.com/faimaAbbasi/dt-metamodel-semantic-grounding.git
+cd dt-metamodel-semantic-grounding
 ```
 
 #### 2. Virtual Environment
