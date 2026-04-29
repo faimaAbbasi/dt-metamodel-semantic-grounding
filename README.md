@@ -4,9 +4,9 @@ This repository demonstrates **semantic grounding (alignment and mapping) of dig
 
 It also includes reproducible experiments for:
 
-- We emphasis lifting heterogeneous metamodels into **RDF** graphs to unify their representation and enable semantic grounding.
-- We perform graph-based alignment between lifted metamodel and ontology, proposing a semantics and structure-aware metamodel ontology matching (**SSM-OM**) method.   
-- We conduct an empirical evaluation using a DT use case to assess interoperability, cross-layer traceability and domain applicability, complemented by benchmark test cases from **[OAEI tracks](https://oaei.ontologymatching.org/)** to evaluate general alignment performance, along with validation of the correctness of the \texttt{RDF} transformation.
+- Lifting heterogeneous metamodels into **RDF** graphs to unify their representation and enable semantic grounding.
+- Performing graph-based alignment between lifted metamodel and ontology, proposing a semantics and structure-aware metamodel ontology matching (**SSM-OM**) method.   
+- Conducting an empirical evaluation using a DT use case to assess interoperability, cross-layer traceability and domain applicability, complemented by benchmark test cases from **[OAEI tracks](https://oaei.ontologymatching.org/)** to evaluate general alignment performance, along with validation of the correctness of the \texttt{RDF} transformation.
 
 ### Air Quality Usecase 
 
