@@ -109,7 +109,7 @@ We then semantically ground DT metamodel through alignment and mapping. We set u
 cd ontology-layer
 python metamodel-ontology-matching.py     
 ```
-To evaluate the performance of **SSM-OM** on different test cases from **[OAEI tracks](https://oaei.ontologymatching.org/)** tracks, run the scripts in the **[evaluation](evaluation)** folder for each test case. The test cases themselves are available in **[testcases](testcases)** folder. A simple execution example is shown below:
+To evaluate the performance of **SSM-OM** on different test cases from **[OAEI tracks](https://oaei.ontologymatching.org/)** tracks, run the scripts in the **[oaei-testcase-evaluation](oaei-testcase-evaluation)** folder for each test case. The test cases themselves are available in **[testcases](testcases)** folder. A simple execution example is shown below:
 ```bash
 cd oaei-testcase-evaluation
 python knowledge-graph-track-1-ontology-matching.py     
