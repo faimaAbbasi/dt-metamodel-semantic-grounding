@@ -34,7 +34,7 @@ dt-metamodel-semantic-grounding/
 ├── output/                                        # Results in .csv files for all experiments for matching tasks
 ├── rdf-validation-experiments/                    # Validation of DT Metamodel Semantic Lifting
 ├── testcases/                                        # OAEI Testcases Used for Evaluation
-├── .gitattributes 
+├── .gitignore
 └── README.md
 └── package.json
 └── package-lock.json
