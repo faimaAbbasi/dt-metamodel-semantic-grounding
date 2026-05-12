@@ -32,6 +32,7 @@ dt-metamodel-semantic-grounding/
 │   ├── brick.ttl                                     # Ontology used for Aligning Metamodel                             
 │   └── metamodel-ontology-matching.py                # Semantic and Structure-aware Metamodel Ontology Matching (SSM-OM)
 ├── output/                                        # Results in .csv files for all experiments for matching tasks
+├── rdf-validation-experiments/                    # Validation of DT Metamodel Semantic Lifting
 ├── testcases/                                        # OAEI Testcases Used for Evaluation
 ├── .gitattributes 
 └── README.md
