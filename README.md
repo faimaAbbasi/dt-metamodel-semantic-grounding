@@ -111,7 +111,7 @@ python metamodel-ontology-matching.py
 ```
 To evaluate the performance of **SSM-OM** on different test cases from **[OAEI tracks](https://oaei.ontologymatching.org/)** tracks, run the scripts in the **[evaluation](evaluation)** folder for each test case. The test cases themselves are available in **[testcases](testcases)** folder. A simple execution example is shown below:
 ```bash
-cd evaluation
+cd oaei-testcase-evaluation
 python knowledge-graph-track-1-ontology-matching.py     
 ```
 
