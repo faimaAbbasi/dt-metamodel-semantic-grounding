@@ -26,21 +26,21 @@ def load_ontology_from_7z(archive_path, internal_filename):
     extracted_path = os.path.join(temp_dir, internal_filename)
     return extracted_path
 
-TAR_PATH = "../testcases/knowledge-graph-1.7z"
+TAR_PATH = "../testcases/common-kg-2.7z"
 
 SOURCE_OWL_PATH = load_ontology_from_7z(
     TAR_PATH,
-    "knowledge-graph-1/memoryalpha-source.xml"
+    "common-kg-2/yago-source.rdf"
 )
 
 TARGET_OWL_PATH = load_ontology_from_7z(
     TAR_PATH,
-    "knowledge-graph-1/stexpanded-target.xml"
+    "common-kg-2/wikidata-target.rdf"
 )
 
 REF_ALIGNMENT_PATH = load_ontology_from_7z(
     TAR_PATH,
-    "knowledge-graph-1/memoryalpha-stexpanded-reference.xml"
+    "common-kg-2/yago-wikidata-reference.rdf"
 )
 
 def evaluate_alignments(predicted_csv_path, reference_alignments):
@@ -98,7 +98,7 @@ def parse_reference_alignment(file_path):
 
 def main():
     reference_alignments = parse_reference_alignment(REF_ALIGNMENT_PATH)
-    results = evaluate_alignments('../output/knowledge-graph-1/memoryalpha-stexpanded-mappings.csv', reference_alignments)
+    results = evaluate_alignments('../output/common-kg-2/yago-wikidata-mappings.csv', reference_alignments)
     print("TP:", len(results["true_positives"]), "\n")
     print("FP:", len(results["false_positives"]), "\n")
     print("FN:", len(results["false_negatives"]), "\n")

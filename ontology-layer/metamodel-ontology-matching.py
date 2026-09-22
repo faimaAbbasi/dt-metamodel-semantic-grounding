@@ -15,6 +15,7 @@ import re
 import json
 import csv
 from typing import List, Dict
+from urllib.request import Request, urlopen
 
 LLM_MODEL = "llama3"  
 TARGET_ONTOLOGY_PATH = "brick.ttl"
@@ -340,7 +341,7 @@ def generate_embeddings_and_props(
     rich_texts: List[str] = []
     prop_sets: Dict[str, Set[str]] = {}
 
-    for uri in entities:
+    for uri in sorted(entities):
         uris_list.append(uri)
         cls_ref = URIRef(uri)
 
@@ -425,13 +426,30 @@ def combined_similarity(
 
 
 def call_llama3_ollama(prompt: str) -> str:
-    result = subprocess.run(
-        ["ollama", "run", LLM_MODEL],
-        input=prompt.encode("utf-8"),
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+    payload = {
+        "model": LLM_MODEL,
+        "prompt": prompt,
+        "stream": False,
+        "format": "json",
+        "options": {
+            "temperature": 0,
+            "seed": 42,
+            "top_k": 1,
+            "top_p": 1
+        }
+    }
+
+    request = Request(
+        "http://localhost:11434/api/generate",
+        data=json.dumps(payload).encode("utf-8"),
+        headers={"Content-Type": "application/json"},
+        method="POST"
     )
-    return result.stdout.decode("utf-8")
+
+    with urlopen(request, timeout=300) as result:
+        data = json.loads(result.read().decode("utf-8"))
+
+    return data.get("response", "")
 
 def fallback_parse_natural_response(response: str) -> List[Dict]:
     try:
@@ -461,6 +479,97 @@ def fallback_parse_natural_response(response: str) -> List[Dict]:
 
     except Exception:
         return []
+    
+def parse_llm_json_response(response: str) -> List[Dict]:
+    cleaned = response.strip()
+
+    # Remove accidental Markdown code fences.
+    cleaned = re.sub(
+        r"^\s*```(?:json)?\s*",
+        "",
+        cleaned,
+        flags=re.IGNORECASE
+    )
+    cleaned = re.sub(r"\s*```\s*$", "", cleaned)
+
+    decoder = json.JSONDecoder()
+    parsed_raw = None
+
+    # Locate the first valid JSON array or object.
+    for index, character in enumerate(cleaned):
+        if character not in "[{":
+            continue
+
+        try:
+            parsed_raw, _ = decoder.raw_decode(cleaned[index:])
+            break
+        except json.JSONDecodeError:
+            continue
+
+    if parsed_raw is None:
+        raise ValueError(f"No valid JSON found. Raw response: {response!r}")
+
+    if isinstance(parsed_raw, dict):
+        parsed_raw = [parsed_raw]
+
+    if not isinstance(parsed_raw, list) or not parsed_raw:
+        raise ValueError("LLM response must be a non-empty JSON array.")
+
+    allowed_relations = {
+        "equivalent",
+        "more general",
+        "less general",
+        "related",
+        "disjoint"
+    }
+
+    normalized = []
+
+    for item in parsed_raw:
+        if not isinstance(item, dict):
+            continue
+
+        item = {
+            str(key).strip().lower(): value
+            for key, value in item.items()
+        }
+
+        try:
+            score = float(item.get("score", 0))
+        except (TypeError, ValueError):
+            score = 0.0
+
+        relation = str(item.get("relation", "related")).strip().lower()
+        if relation not in allowed_relations:
+            relation = "related"
+
+        normalized.append({
+            "source_class_uri": str(
+                item.get("source_class_uri", "")
+            ).strip(),
+            "target_class_uri": str(
+                item.get("target_class_uri", "")
+            ).strip(),
+            "relation": relation,
+            "score": max(0.0, min(1.0, score)),
+            "justification": str(
+                item.get("justification", "No justification provided.")
+            ).strip()
+        })
+
+    if not normalized:
+        raise ValueError("No valid mapping objects found.")
+
+    # Return only the highest-scoring mapping.
+    return [
+        max(
+            normalized,
+            key=lambda mapping: (
+                mapping["score"],
+                mapping["target_class_uri"]
+            )
+        )
+    ]
 
 def run_llm_alignment_with_ollama(source_contexts, target_contexts, top_matches, top_k, path='metamodel-ontology-mappings.csv'):
     all_mappings = []
@@ -514,54 +623,35 @@ def run_llm_alignment_with_ollama(source_contexts, target_contexts, top_matches,
         "justification": "The source and target context ..."
     }
     ]
+    
+    No markdown.
+    No commentary.
+    No extra text.
     """
 
         response = call_llama3_ollama(prompt)
 
         try:
-            json_match = re.search(r'\[\s*{.*?}\s*\]', response, re.DOTALL)
-            if not json_match:
-                json_match = re.search(r'{.*}', response, re.DOTALL)
+            parsed = parse_llm_json_response(response)
 
-            if json_match:
-                json_str = json_match.group(0)
-                if json_str.startswith('{') and not json_str.startswith('['):
-                    json_str = f'[{json_str}]'
+            all_mappings.extend(parsed)
 
-                parsed_raw = json.loads(json_str)
-
-                # Normalize keys and ensure justification exists
-                normalized = []
-                for item in parsed_raw:
-                    item = {k.lower(): v for k, v in item.items()}
-                    normalized.append({
-                        "source_class_uri": item.get("source_class_uri", ""),
-                        "target_class_uri": item.get("target_class_uri", ""),
-                        "relation": item.get("relation", "").lower(),
-                        "score": float(item.get("score", 0)),
-                        "justification": item.get("justification", "No justification provided.")
-                    })
-
-                best_mapping = max(normalized, key=lambda x: x["score"])
-                parsed = [best_mapping]
-
-                all_mappings.extend(parsed)
-                for row in parsed:
-                    csv_rows.append([
-                        row["source_class_uri"],
-                        row["target_class_uri"],
-                        row["relation"],
-                        row["score"],
-                        row["justification"]
-                    ])
-            else:
-                raise ValueError("No JSON found in response.")
+            for row in parsed:
+                csv_rows.append([
+                    row["source_class_uri"],
+                    row["target_class_uri"],
+                    row["relation"],
+                    row["score"],
+                    row["justification"]
+                ])
 
         except Exception as e:
             fallback = fallback_parse_natural_response(response)
+
             if fallback:
                 parsed = fallback
                 all_mappings.extend(parsed)
+
                 for row in parsed:
                     csv_rows.append([
                         row["source_class_uri"],
@@ -570,9 +660,14 @@ def run_llm_alignment_with_ollama(source_contexts, target_contexts, top_matches,
                         row["score"],
                         row["justification"]
                     ])
+
                 print("Mapping Parsed with fallback:", parsed)
             else:
-                parsed = {"error": "Failed to parse", "raw": response, "exception": str(e)}
+                parsed = {
+                    "error": "Failed to parse",
+                    "raw": response,
+                    "exception": str(e)
+                }
                 print("Mapping Parse Error:", parsed)
                 continue
 
@@ -604,13 +699,23 @@ def main():
     source_graph, source_ttl = generate_knowledge_graph_from_metamodel(source_model_json)
     print(f" Metamodel triples count: {len(source_ttl)}")
     
+    # print("RDF Triples from metamodel:")
+    # for triple in source_ttl:
+    #     print(f"  {triple}")
+        
+    # print("RDF Graph from metamodel:")
+    # for s, p, o in source_graph:
+    #     print(f"  {s} {p} {o}")
+    
     print("\n2. Processing target ontology...")
     target_graph, target_ttl = generate_ontology_graph_and_triples(TARGET_ONTOLOGY_PATH)
     print(f" Target ontology triples count: {len(target_ttl)}")
     
     # 3. Extract class URI sets
-    source_classes = extract_classes(source_graph)
-    target_classes = extract_classes(target_graph)
+    source_classes = sorted(extract_classes(source_graph))
+    target_classes = sorted(extract_classes(target_graph))
+    
+    #print(target_classes)
     
     # 4. Generate embeddings + property sets for source and target
     label_src, rich_src, props_src = generate_embeddings_and_props(source_graph, source_classes)
@@ -630,7 +735,7 @@ def main():
                  jw_threshold=0.9
              )
              sims.append((t, score))
-         sims.sort(key=lambda x: x[1], reverse=True)
+         sims.sort(key=lambda x: (-x[1], x[0]))
          results[s] = sims[:5]  
         
     # print("\n3. Top-k Embeddings")
@@ -643,16 +748,6 @@ def main():
     source_contexts = extract_class_contexts_metamodel(source_graph)
     target_contexts = extract_class_contexts(target_graph)
     top_k=5
-    
-    # for s_uri in source_contexts.items():
-    #     print(s_uri)
-    
-    # target = "https://w3id.org/rec#Controller"
- 
-    # for uri, info in target_contexts.items():   # unpack tuple
-    #     #print(uri, info)
-    #     if uri == target:                      # compare only the key
-    #         print("MATCH:", uri, info)
     
     print("\n4. LLM Alignment...")
     mappings=run_llm_alignment_with_ollama(source_contexts, target_contexts, results, top_k)

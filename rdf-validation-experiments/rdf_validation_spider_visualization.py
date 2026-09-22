@@ -101,7 +101,7 @@ def extract_metrics(validation_results):
 
 def create_spider_diagram(metrics, output_path_base):
     """
-    Create and save a spider/radar diagram visualization in both PNG and EPS formats.
+    Create and save a spider/radar diagram visualization in both PNG and PDF formats.
     
     Args:
         metrics: Dictionary of metric names and values
@@ -152,16 +152,16 @@ def create_spider_diagram(metrics, output_path_base):
     
     plt.tight_layout()
     
-    # Save in both PNG and EPS formats
+    # Save in both PNG and PDF formats
     png_path = output_path_base + '.png'
-    eps_path = output_path_base + '.eps'
+    pdf_path = output_path_base + '.pdf'
     
     plt.savefig(png_path, dpi=300, bbox_inches='tight', format='png')
-    plt.savefig(eps_path, dpi=300, bbox_inches='tight', format='eps')
+    plt.savefig(pdf_path, bbox_inches='tight', format='pdf')
     
     print(f"Spider diagram saved to:")
     print(f"  • PNG: {png_path}")
-    print(f"  • EPS: {eps_path}")
+    print(f"  • PDF: {pdf_path}")
     
     plt.close(fig)
     return fig, ax
@@ -169,7 +169,7 @@ def create_spider_diagram(metrics, output_path_base):
 
 def create_radar_comparison_diagram(validation_results, output_path_base):
     """
-    Create a radar diagram showing RDF vs JSON validation comparison in both PNG and EPS.
+    Create a radar diagram showing RDF vs JSON validation comparison in both PNG and PDF.
     
     Args:
         validation_results: Dictionary of validation data
@@ -240,16 +240,16 @@ def create_radar_comparison_diagram(validation_results, output_path_base):
     ax2.legend(['JSON'], loc='upper right', bbox_to_anchor=(1.25, 1.15), fontsize=30, frameon=True, fancybox=True, shadow=True)
     plt.tight_layout()
     
-    # Save in both PNG and EPS formats
+    # Save in both PNG and PDF formats
     png_path = output_path_base + '.png'
-    eps_path = output_path_base + '.eps'
+    pdf_path = output_path_base + '.pdf'
     
     plt.savefig(png_path, dpi=300, bbox_inches='tight', format='png')
-    plt.savefig(eps_path, dpi=300, bbox_inches='tight', format='eps')
+    plt.savefig(pdf_path, bbox_inches='tight', format='pdf')
     
     print(f"Comparison radar diagram saved to:")
     print(f"  • PNG: {png_path}")
-    print(f"  • EPS: {eps_path}")
+    print(f"  • PDF: {pdf_path}")
     
     plt.close(fig)
     return fig, (ax1, ax2)
@@ -316,7 +316,7 @@ def create_summary_report(metrics, validation_results, output_path):
 
 def create_rdf_only_radar(output_path_base):
     """
-    Create a radar diagram for RDF validation metrics only in PNG and EPS formats.
+    Create a radar diagram for RDF validation metrics only in PNG and PDF formats.
     
     Args:
         output_path_base: Base path to save the visualization (without extension)
@@ -359,23 +359,23 @@ def create_rdf_only_radar(output_path_base):
     
     plt.tight_layout()
     
-    # Save in both PNG and EPS formats
+    # Save in both PNG and PDF formats
     png_path = output_path_base + '.png'
-    eps_path = output_path_base + '.eps'
+    pdf_path = output_path_base + '.pdf'
     
     plt.savefig(png_path, dpi=300, bbox_inches='tight', format='png')
-    plt.savefig(eps_path, dpi=300, bbox_inches='tight', format='eps')
+    plt.savefig(pdf_path, bbox_inches='tight', format='pdf')
     
     print(f"RDF-only radar diagram saved to:")
     print(f"  • PNG: {png_path}")
-    print(f"  • EPS: {eps_path}")
+    print(f"  • PDF: {pdf_path}")
     
     plt.close(fig)
 
 
 def create_json_only_radar(output_path_base):
     """
-    Create a radar diagram for JSON validation metrics only in PNG and EPS formats.
+    Create a radar diagram for JSON validation metrics only in PNG and PDF formats.
     
     Args:
         output_path_base: Base path to save the visualization (without extension)
@@ -418,16 +418,16 @@ def create_json_only_radar(output_path_base):
     
     plt.tight_layout()
     
-    # Save in both PNG and EPS formats
+    # Save in both PNG and PDF formats
     png_path = output_path_base + '.png'
-    eps_path = output_path_base + '.eps'
+    pdf_path = output_path_base + '.pdf'
     
     plt.savefig(png_path, dpi=300, bbox_inches='tight', format='png')
-    plt.savefig(eps_path, dpi=300, bbox_inches='tight', format='eps')
+    plt.savefig(pdf_path, bbox_inches='tight', format='pdf')
     
     print(f"JSON-only radar diagram saved to:")
     print(f"  • PNG: {png_path}")
-    print(f"  • EPS: {eps_path}")
+    print(f"  • PDF: {pdf_path}")
     
     plt.close(fig)
 
@@ -461,7 +461,7 @@ def main():
     print()
     
     # Create visualizations
-    print("Creating visualizations (PNG + EPS formats)...\n")
+    print("Creating visualizations (PNG + PDF formats)...\n")
     
     # 1. Comparison radar diagram (RDF vs JSON side-by-side)
     print("[1/3] Generating RDF vs JSON Comparison Radar Diagram...")

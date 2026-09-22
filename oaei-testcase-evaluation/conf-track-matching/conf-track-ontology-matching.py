@@ -22,6 +22,7 @@ import json
 import csv
 from typing import List, Dict
 import py7zr # type: ignore
+from urllib.request import Request, urlopen
 
 # SOURCE_OWL_PATH = '../../testcases/conf-track/dbpedia.owl'
 # TARGET_OWL_PATH = '../../testcases/conf-track/ConfOf.xml'
@@ -60,12 +61,12 @@ SOURCE_OWL_PATH = load_ontology_from_7z(
 
 TARGET_OWL_PATH = load_ontology_from_7z(
     TAR_PATH,
-    "conf-track/ConfOf.xml"
+    "conf-track/sigkdd.owl"
 )
 
 REF_ALIGNMENT_PATH = load_ontology_from_7z(
     TAR_PATH,
-    "conf-track/dbpedia-ConfOf-ref.rdf"
+    "conf-track/dbpedia-sigkdd-ref.rdf"
 )
 # ------------------ UTILITIES ------------------
 def normalize_uri(uri: str) -> str:
@@ -457,13 +458,30 @@ def combined_similarity(
 
 # ------------------ LLM CALL & ALIGNMENTS ------------------
 def call_llama3_ollama(prompt: str) -> str:
-    result = subprocess.run(
-        ["ollama", "run", LLM_MODEL],
-        input=prompt.encode("utf-8"),
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+    payload = {
+        "model": LLM_MODEL,
+        "prompt": prompt,
+        "stream": False,
+        "format": "json",
+        "options": {
+            "temperature": 0,
+            "seed": 42,
+            "top_k": 1,
+            "top_p": 1
+        }
+    }
+
+    request = Request(
+        "http://localhost:11434/api/generate",
+        data=json.dumps(payload).encode("utf-8"),
+        headers={"Content-Type": "application/json"},
+        method="POST"
     )
-    return result.stdout.decode("utf-8")
+
+    with urlopen(request, timeout=300) as result:
+        data = json.loads(result.read().decode("utf-8"))
+
+    return data.get("response", "")
 
 def fallback_parse_natural_response(response: str) -> List[Dict]:
     try:
@@ -493,8 +511,136 @@ def fallback_parse_natural_response(response: str) -> List[Dict]:
 
     except Exception:
         return []
+def parse_llm_json_response(response: str) -> List[Dict]:
+    if not response or not str(response).strip():
+        raise ValueError("LLM returned an empty response.")
 
-def run_llm_alignment_with_ollama(source_contexts,target_contexts,top_matches,top_k,reference_alignments,path='dbpedia-ekaw-mappings.csv'):
+    cleaned = str(response)
+
+    # Remove ANSI terminal sequences.
+    cleaned = re.sub(
+        r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])",
+        "",
+        cleaned
+    )
+
+    cleaned = cleaned.replace("\r", "").strip()
+
+    # Remove Markdown fences.
+    cleaned = re.sub(
+        r"^\s*```(?:json)?\s*",
+        "",
+        cleaned,
+        flags=re.IGNORECASE
+    )
+    cleaned = re.sub(r"\s*```\s*$", "", cleaned)
+
+    decoder = json.JSONDecoder()
+    parsed_raw = None
+
+    # Extract the first valid JSON object or array.
+    for index, character in enumerate(cleaned):
+        if character not in "[{":
+            continue
+
+        try:
+            parsed_raw, _ = decoder.raw_decode(cleaned[index:])
+            break
+        except json.JSONDecodeError:
+            continue
+
+    if parsed_raw is None:
+        raise ValueError(f"No valid JSON found: {response!r}")
+
+    # Unwrap common LLM response containers.
+    if isinstance(parsed_raw, dict):
+        if isinstance(parsed_raw.get("results"), list):
+            parsed_raw = parsed_raw["results"]
+
+        elif isinstance(parsed_raw.get("data"), list):
+            parsed_raw = parsed_raw["data"]
+
+        elif isinstance(parsed_raw.get("mappings"), list):
+            parsed_raw = parsed_raw["mappings"]
+
+        elif isinstance(parsed_raw.get("response"), str):
+            return parse_llm_json_response(parsed_raw["response"])
+
+        else:
+            # Treat an individual mapping object as a one-item list.
+            parsed_raw = [parsed_raw]
+
+    if not isinstance(parsed_raw, list) or not parsed_raw:
+        raise ValueError("Expected a non-empty JSON mapping list.")
+
+    allowed_relations = {
+        "equivalent",
+        "more general",
+        "less general",
+        "related",
+        "disjoint"
+    }
+
+    normalized = []
+
+    for item in parsed_raw:
+        if not isinstance(item, dict):
+            continue
+
+        item = {
+            str(key).strip().lower(): value
+            for key, value in item.items()
+        }
+
+        source_uri = str(
+            item.get("source_class_uri", "")
+        ).strip()
+
+        target_uri = str(
+            item.get("target_class_uri", "")
+        ).strip()
+
+        if not source_uri or not target_uri:
+            continue
+
+        try:
+            score = float(item.get("score", 0.0))
+        except (TypeError, ValueError):
+            score = 0.0
+
+        relation = str(
+            item.get("relation", "related")
+        ).strip().lower()
+
+        if relation not in allowed_relations:
+            relation = "related"
+
+        justification = str(
+            item.get("justification", "No justification provided.")
+        ).strip()
+
+        normalized.append({
+            "source_class_uri": source_uri,
+            "target_class_uri": target_uri,
+            "relation": relation,
+            "score": max(0.0, min(1.0, score)),
+            "justification": justification
+        })
+
+    if not normalized:
+        raise ValueError("No valid mapping objects found.")
+
+    return [
+        max(
+            normalized,
+            key=lambda mapping: (
+                mapping["score"],
+                mapping["target_class_uri"]
+            )
+        )
+    ]
+
+def run_llm_alignment_with_ollama(source_contexts,target_contexts,top_matches,top_k,reference_alignments,path='dbpedia-sigkdd-mappings.csv'):
     """
     - source_contexts: dict mapping source URI -> context string
     - target_contexts: dict mapping target URI -> context string
@@ -528,113 +674,155 @@ def run_llm_alignment_with_ollama(source_contexts,target_contexts,top_matches,to
         else:
             print("LLM reranking triggered.")
             prompt = f"""
-        You are an expert in ontology alignment.
+            You are an expert in ontology alignment.
 
-        Analyze the following source class and its candidate target class matches based on both:
-        - Numerical similarity score
-        - Semantic fit between contexts
+            Analyze the following source class and its candidate target class matches based on both:
+            - Numerical similarity score
+            - Semantic fit between contexts
 
-        ---
+            ---
 
-        SOURCE CLASS URI: {s_uri}
-        Source Context:
-        {source_ctx}
+            SOURCE CLASS URI: {s_uri}
+            Source Context:
+            {source_ctx}
 
-        TOP {top_k} CANDIDATE MATCHES:
-        """
+            TOP {top_k} CANDIDATE MATCHES:
+            """
             for tgt_uri, score in top3:
-                target_ctx = target_contexts.get(tgt_uri, "")
-                prompt += (
-                        f"\nTARGET CLASS URI: {tgt_uri} (SIMILARITY SCORE: {score:.4f})\n"
-                        f"TARGET CLASS CONTEXT:\n{target_ctx}\n"
-                )
+                    target_ctx = target_contexts.get(tgt_uri, "")
+                    prompt += (
+                            f"\nTARGET CLASS URI: {tgt_uri} (SIMILARITY SCORE: {score:.4f})\n"
+                            f"TARGET CLASS CONTEXT:\n{target_ctx}\n"
+                    )
 
             prompt += """
-        ---
+            ---
 
-        TASK:
+            TASK:
 
-        - Select the **best semantic match** for the source class based on **both numerical similarity** and **contextual meaning**.
-        - You MAY choose a class with a slightly lower similarity score if it is semantically more appropriate.
-        - Then classify the semantic relationship between the source and selected target class as one of:
-        "equivalent", "more general", "less general", "related", "disjoint"
+            - Select the **best semantic match** for the source class based on **both numerical similarity** and **contextual meaning**.
+            - You MAY choose a class with a slightly lower similarity score if it is semantically more appropriate.
+            - Then classify the semantic relationship between the source and selected target class as one of:
+            "equivalent", "more general", "less general", "related", "disjoint"
 
-        RESPONSE FORMAT:
+            RESPONSE FORMAT:
 
-        Return ONLY a JSON array with a single object in this format:
+            Return ONLY a JSON array with a single object in this format:
 
-        [
-        {
-            "source_class_uri": "<source_uri>",
-            "target_class_uri": "<chosen_target_uri>",
-            "relation": "equivalent" | "more general" | "less general" | "related" | "disjoint",
-            "score": <chosen_similarity_score>,
-            "justification": "Brief explanation of why this match is most appropriate considering both context and score."
-        }
-        ]
-        """
+            [
+            {
+                "source_class_uri": "<source_uri>",
+                "target_class_uri": "<chosen_target_uri>",
+                "relation": "equivalent" | "more general" | "less general" | "related" | "disjoint",
+                "score": <chosen_similarity_score>,
+                "justification": "Brief explanation of why this match is most appropriate considering both context and score."
+            }
+            ]
+            """
+             # Call Ollama exactly once.
             response = call_llama3_ollama(prompt)
+            #print("LLM Response:", repr(response))
 
             try:
-                json_match = re.search(r'\[\s*{.*?}\s*\]', response, re.DOTALL)
-                if not json_match:
-                    json_match = re.search(r'{.*}', response, re.DOTALL)
+                parsed = parse_llm_json_response(response)
 
-                if json_match:
-                    json_str = json_match.group(0)
-                    if json_str.startswith('{') and not json_str.startswith('['):
-                        json_str = f'[{json_str}]'
+            except Exception as exc:
+                print("JSON parsing failed:", exc)
+                print("Raw response:", repr(response))
 
-                    parsed_raw = json.loads(json_str)
-                    normalized = []
-                    for item in parsed_raw:
-                        item = {k.lower(): v for k, v in item.items()}
-                        normalized.append({
-                            "source_class_uri": item.get("source_class_uri", ""),
-                            "target_class_uri": item.get("target_class_uri", ""),
-                            "relation": item.get("relation", "").lower(),
-                            "score": float(item.get("score", 0)),
-                            "justification": item.get("justification", "No justification provided.")
-                        })
-                    best_mapping = max(normalized, key=lambda x: x["score"])
-                    parsed = [best_mapping]
-                else:
-                    raise ValueError("No JSON found in response.")
-            except Exception as e:
-                fallback = fallback_parse_natural_response(response)
-                if fallback:
-                    parsed = fallback
-                    print("Mapping Parsed with fallback:", parsed)
-                else:
-                    parsed = [{
-                        "source_class_uri": s_uri,
-                        "target_class_uri": "N/A",
-                        "relation": "N/A",
-                        "score": 0.0,
-                        "justification": f"LLM failed to parse response. Raw: {response[:200]}"
-                    }]
-                    print("Mapping Parse Error:", parsed)
-        print("Mapping Parsed:", parsed)
-        all_mappings.extend(parsed)
-        for row in parsed:
+                parsed = fallback_parse_natural_response(response)
+
+                if not parsed:
+                    print("Mapping Parse Error: mapping skipped.")
+                    continue
+
+                print("Mapping parsed with fallback:", parsed)
+
+        if isinstance(parsed, dict):
+            parsed = [parsed]
+
+        if not isinstance(parsed, list):
+            print("Invalid parsed response. Mapping skipped.")
+            continue
+
+        required_fields = (
+            "source_class_uri",
+            "target_class_uri",
+            "relation",
+            "score",
+            "justification"
+        )
+
+        valid_parsed = []
+
+        for mapping in parsed:
+            if not isinstance(mapping, dict):
+                continue
+
+            if not all(
+                mapping.get(field) not in (None, "")
+                for field in required_fields
+            ):
+                print("Invalid or empty mapping skipped:", mapping)
+                continue
+
+            valid_parsed.append(mapping)
+
+        if not valid_parsed:
+            print("No valid mapping produced.")
+            continue
+
+        print("Mapping Parsed:", valid_parsed)
+
+        all_mappings.extend(valid_parsed)
+
+        for mapping in valid_parsed:
             csv_rows.append([
-                row["source_class_uri"],
-                row["target_class_uri"],
-                row["relation"],
-                row["score"],
-                row["justification"]
+                mapping["source_class_uri"],
+                mapping["target_class_uri"],
+                mapping["relation"],
+                mapping["score"],
+                mapping["justification"]
             ])
+    
     csv_path = os.path.join(os.path.dirname(__file__), '../../', 'output\\conf-track', path)
     os.makedirs(os.path.dirname(csv_path), exist_ok=True)
-
+        
     with open(csv_path, 'w', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f)
-        writer.writerow(["source_class_uri", "target_class_uri", "semantic_relation", "similarity_score", "justification"])
-        for row in csv_rows:
-            writer.writerow(row)
-
+            writer = csv.writer(f)
+            writer.writerow(["source_class_uri", "target_class_uri", "semantic_relation", "similarity_score", "justification"])
+            for row in csv_rows:
+                writer.writerow(row)
+        
     print(f"\n LLM alignment results saved to {'output\\conf-track',path}")
     return all_mappings
+
+    # csv_path = os.path.join(
+    #     os.path.dirname(__file__),
+    #     "../../",
+    #     "output",
+    #     "conf-track",
+    #     path
+    # )
+
+    # os.makedirs(os.path.dirname(csv_path), exist_ok=True)
+
+    # with open(csv_path, "w", newline="", encoding="utf-8") as file:
+    #     writer = csv.writer(file)
+
+    #     writer.writerow([
+    #         "source_class_uri",
+    #         "target_class_uri",
+    #         "semantic_relation",
+    #         "similarity_score",
+    #         "justification"
+    #     ])
+
+    #     writer.writerows(csv_rows)
+
+    # print(f"\nLLM alignment results saved to {csv_path}")
+
+    # return all_mappings
 
 def main():
     reference_alignments, KNOWN_SOURCE_CLASSES, KNOWN_TARGET_CLASSES = parse_reference_alignment(REF_ALIGNMENT_PATH)

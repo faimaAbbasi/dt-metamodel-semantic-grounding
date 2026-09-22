@@ -4,17 +4,20 @@ import xml.etree.ElementTree as ET
 import os
 import tarfile
 import tempfile
+import py7zr # type: ignore
 
-def load_ontology_from_tar(tar_path, internal_filename):
+def load_ontology_from_7z(archive_path, internal_filename):
     """
-    Extracts a file from a TAR archive into a temporary folder
+    Extracts a file from a 7z archive into a temporary folder
     and returns the temporary path so RDFlib can read it.
     """
     temp_dir = tempfile.mkdtemp()
 
-    with tarfile.open(tar_path, "r") as tar:
-        member = tar.getmember(internal_filename)
-        tar.extract(member, temp_dir)
+    with py7zr.SevenZipFile(archive_path, mode='r') as archive:
+        all_files = archive.getnames()
+        if internal_filename not in all_files:
+            raise FileNotFoundError(f"{internal_filename} not found in {archive_path}")
+        archive.extract(targets=[internal_filename], path=temp_dir)
 
     extracted_path = os.path.join(temp_dir, internal_filename)
     return extracted_path
@@ -81,17 +84,17 @@ def parse_reference_alignment(file_path):
     return alignments
 
 def main():
-    TAR_PATH = "../../testcases/conf-track.tar"
+    TAR_PATH = "../../testcases/conf-track.7z"
     file_pairs = [
         # Add your (prediction_file, reference_file) pairs here
         ('../../output/conf-track/dbpedia-ConfOf-mappings.csv', 
-          load_ontology_from_tar(TAR_PATH, "conf-track/dbpedia-ConfOf-ref.rdf")),
+          load_ontology_from_7z(TAR_PATH, "conf-track/dbpedia-ConfOf-ref.rdf")),
         
         ('../../output/conf-track/dbpedia-ekaw-mappings.csv', 
-         load_ontology_from_tar(TAR_PATH, "conf-track/dbpedia-ekaw-ref.rdf")),
+         load_ontology_from_7z(TAR_PATH, "conf-track/dbpedia-ekaw-ref.rdf")),
         
         ('../../output/conf-track/dbpedia-sigkdd-mappings.csv', 
-         load_ontology_from_tar(TAR_PATH, "conf-track/dbpedia-sigkdd-ref.rdf"))
+         load_ontology_from_7z(TAR_PATH, "conf-track/dbpedia-sigkdd-ref.rdf"))
     ]
 
     total_y_true = []
