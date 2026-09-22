@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-22T16:09:31.952992",
+  "timestamp": "2026-09-22T14:04:55.908407",
   "experiment_name": "Alignment Sensitivity Analysis",
   "data": {
     "source_classes_count": 7,
-    "target_classes_count": 7,
+    "target_classes_count": 50,
     "rdf_graph_triples": 69,
-    "target_graph_triples": 0
+    "target_graph_triples": 55308
   },
   "methods": {
     "rdf_based": {
@@ -13,19 +13,19 @@
       "alignments_count": 5,
       "sample_alignments": [
         {
-          "source": "http://metamodel#ProximitySensor",
-          "target": "http://metamodel#ProximitySensor",
-          "score": 0.854403293132782
+          "source": "http://metamodel#HumiditySensor",
+          "target": "https://brickschema.org/schema/Brick#Low_Humidity_Alarm",
+          "score": 0.6590357422828674
         },
         {
           "source": "http://metamodel#TemperatureSensor",
-          "target": "http://metamodel#TemperatureSensor",
-          "score": 0.8525333580334992
+          "target": "https://brickschema.org/schema/Brick#Condenser_Water_Temperature_Sensor",
+          "score": 0.6572859883308411
         },
         {
-          "source": "http://metamodel#HumiditySensor",
-          "target": "http://metamodel#HumiditySensor",
-          "score": 0.846319890460985
+          "source": "http://metamodel#ProximitySensor",
+          "target": "https://w3id.org/rec#VibrationSensorEquipment",
+          "score": 0.6337748765945435
         }
       ],
       "metrics": {
@@ -45,18 +45,18 @@
       "sample_alignments": [
         {
           "source": "http://metamodel#TemperatureSensor",
-          "target": "http://metamodel#TemperatureSensor",
-          "score": 0.8634308359962214
-        },
-        {
-          "source": "http://metamodel#ProximitySensor",
-          "target": "http://metamodel#ProximitySensor",
-          "score": 0.8609954499605039
+          "target": "https://brickschema.org/schema/Brick#Condenser_Water_Temperature_Sensor",
+          "score": 0.6682800650596619
         },
         {
           "source": "http://metamodel#HumiditySensor",
-          "target": "http://metamodel#HumiditySensor",
-          "score": 0.848607877145798
+          "target": "https://brickschema.org/schema/Brick#Low_Humidity_Alarm",
+          "score": 0.6665881872177124
+        },
+        {
+          "source": "http://metamodel#ProximitySensor",
+          "target": "https://w3id.org/rec#VibrationSensorEquipment",
+          "score": 0.6419178247451782
         }
       ],
       "metrics": {

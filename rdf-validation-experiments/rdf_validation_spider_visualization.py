@@ -52,56 +52,29 @@ def load_validation_results(validation_dir):
     return results
 
 
-def extract_metrics(validation_results):
-    """
-    Extract key metrics from validation results for spider diagram.
-    
-    Args:
-        validation_results: Dictionary of validation data
-        
-    Returns:
-        Dictionary with metric names and values (0-1 scale)
-    """
-    metrics = {}
-    
-    # Extract from RDF validation report
-    if 'rdf_validation' in validation_results:
-        rdf = validation_results['rdf_validation']
-        validations = rdf.get('validations', {})
-        
-        # Roundtrip validation
-        roundtrip = validations.get('roundtrip', {})
-        metrics['Class Preservation'] = roundtrip.get('class_preservation_rate', 0)
-        metrics['Attribute Preservation'] = roundtrip.get('attribute_preservation_rate', 0)
-        
-        # Completeness validation
-        completeness = validations.get('completeness', {})
-        metrics['Schema Completeness'] = completeness.get('completeness_score', 0)
-    
-    # Extract from Master validation report
-    if 'master_validation' in validation_results:
-        master = validation_results['master_validation']
-        summary = master.get('results', {}).get('rdf_transformation', {}).get('summary', {})
-        
-        metrics['Structure Preservation'] = summary.get('structure_preservation_rate', 0)
-        metrics['Semantic Equivalence'] = summary.get('semantic_equivalence_rate', 0)
-        metrics['Transformation Quality'] = summary.get('overall_transformation_quality', 0)
-        
-        # SHACL conformance
-        shacl_result = master.get('results', {}).get('shacl', {})
-        metrics['SHACL Conformance'] = 1.0 if shacl_result.get('conforms', False) else 0.0
-        
-        # Alignment sensitivity
-        alignment = master.get('results', {}).get('alignment_sensitivity', {}).get('summary', {})
-        metrics['RDF F1 Score'] = alignment.get('rdf_f1_score', 0)
-        metrics['JSON F1 Score'] = alignment.get('json_f1_score', 0)
-    
-    return metrics
+def extract_radar_metrics(validation_results):
+    """Return the shared RDF and JSON radar values saved by the master runner."""
+    master = validation_results.get('master_validation', {})
+    shared_metrics = master.get('visualization_metrics', {})
+    rdf_metrics = shared_metrics.get('rdf', {})
+    json_metrics = shared_metrics.get('json', {})
+
+    if rdf_metrics and json_metrics:
+        return rdf_metrics, json_metrics
+
+    raise ValueError(
+        'No shared visualization metrics found. Run run_all_validations.py first.'
+    )
+
+
+def radar_values(metrics):
+    """Convert unavailable metric values to gaps in the radar plot."""
+    return [np.nan if value is None else float(value) for value in metrics.values()]
 
 
 def create_spider_diagram(metrics, output_path_base):
     """
-    Create and save a spider/radar diagram visualization in both PNG and PDF formats.
+    Create and save a spider/radar diagram visualization in both PNG and EPS formats.
     
     Args:
         metrics: Dictionary of metric names and values
@@ -109,7 +82,7 @@ def create_spider_diagram(metrics, output_path_base):
     """
     # Prepare data
     categories = list(metrics.keys())
-    values = list(metrics.values())
+    values = radar_values(metrics)
     
     # Number of variables
     num_vars = len(categories)
@@ -152,55 +125,39 @@ def create_spider_diagram(metrics, output_path_base):
     
     plt.tight_layout()
     
-    # Save in both PNG and PDF formats
+    # Save in PNG, EPS, and PDF formats
     png_path = output_path_base + '.png'
+    eps_path = output_path_base + '.eps'
     pdf_path = output_path_base + '.pdf'
     
     plt.savefig(png_path, dpi=300, bbox_inches='tight', format='png')
-    plt.savefig(pdf_path, bbox_inches='tight', format='pdf')
+    plt.savefig(eps_path, dpi=300, bbox_inches='tight', format='eps')
+    plt.savefig(pdf_path, dpi=300, bbox_inches='tight', format='pdf')
     
     print(f"Spider diagram saved to:")
     print(f"  • PNG: {png_path}")
+    print(f"  • EPS: {eps_path}")
     print(f"  • PDF: {pdf_path}")
     
     plt.close(fig)
     return fig, ax
 
 
-def create_radar_comparison_diagram(validation_results, output_path_base):
+def create_radar_comparison_diagram(rdf_metrics, json_metrics, output_path_base):
     """
-    Create a radar diagram showing RDF vs JSON validation comparison in both PNG and PDF.
+    Create a radar diagram showing RDF vs JSON validation comparison in both PNG and EPS.
     
     Args:
-        validation_results: Dictionary of validation data
+        rdf_metrics: RDF metric names and values (0-1 scale)
+        json_metrics: JSON metric names and values (0-1 scale)
         output_path_base: Base path to save the visualization (without extension)
     """
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(22, 10), subplot_kw=dict(projection='polar'))
     
-    # RDF metrics
-    rdf_metrics = {
-        'Structure\nPreservation': 1.0,
-        'Schema\nCompleteness': 1.0,
-        'Semantic\nEquivalence': 1.0,
-        'Class\nPreservation': 1.0,
-        'SHACL\nConformance': 1.0,
-        'F1 Score': 1.0
-    }
-    
-    # JSON metrics (from alignment sensitivity)
-    json_metrics = {
-        'Structure\nPreservation': 0.8,
-        'Schema\nCompleteness': 0.8,
-        'Semantic\nEquivalence': 0.8,
-        'Class\nPreservation': 1.0,
-        'SHACL\nConformance': 0.0,
-        'F1 Score': 0.8
-    }
-    
     # Prepare data
     categories = list(rdf_metrics.keys())
-    rdf_values = list(rdf_metrics.values())
-    json_values = list(json_metrics.values())
+    rdf_values = radar_values(rdf_metrics)
+    json_values = radar_values(json_metrics)
     
     num_vars = len(categories)
     angles = np.linspace(0, 2 * np.pi, num_vars, endpoint=False).tolist()
@@ -240,15 +197,18 @@ def create_radar_comparison_diagram(validation_results, output_path_base):
     ax2.legend(['JSON'], loc='upper right', bbox_to_anchor=(1.25, 1.15), fontsize=30, frameon=True, fancybox=True, shadow=True)
     plt.tight_layout()
     
-    # Save in both PNG and PDF formats
+    # Save in PNG, EPS, and PDF formats
     png_path = output_path_base + '.png'
+    eps_path = output_path_base + '.eps'
     pdf_path = output_path_base + '.pdf'
     
     plt.savefig(png_path, dpi=300, bbox_inches='tight', format='png')
-    plt.savefig(pdf_path, bbox_inches='tight', format='pdf')
+    plt.savefig(eps_path, dpi=300, bbox_inches='tight', format='eps')
+    plt.savefig(pdf_path, dpi=300, bbox_inches='tight', format='pdf')
     
     print(f"Comparison radar diagram saved to:")
     print(f"  • PNG: {png_path}")
+    print(f"  • EPS: {eps_path}")
     print(f"  • PDF: {pdf_path}")
     
     plt.close(fig)
@@ -314,27 +274,17 @@ def create_summary_report(metrics, validation_results, output_path):
     print(f"Summary report saved to: {output_path}")
 
 
-def create_rdf_only_radar(output_path_base):
+def create_rdf_only_radar(rdf_metrics, output_path_base):
     """
-    Create a radar diagram for RDF validation metrics only in PNG and PDF formats.
+    Create a radar diagram for RDF validation metrics only in PNG and EPS formats.
     
     Args:
         output_path_base: Base path to save the visualization (without extension)
     """
     fig, ax = plt.subplots(figsize=(14, 12), subplot_kw=dict(projection='polar'))
     
-    # RDF metrics
-    rdf_metrics = {
-        'Structure\nPreservation': 1.0,
-        'Schema\nCompleteness': 1.0,
-        'Semantic\nEquivalence': 1.0,
-        'Class\nPreservation': 1.0,
-        'SHACL\nConformance': 1.0,
-        'F1 Score': 1.0
-    }
-    
     categories = list(rdf_metrics.keys())
-    rdf_values = list(rdf_metrics.values())
+    rdf_values = radar_values(rdf_metrics)
     
     num_vars = len(categories)
     angles = np.linspace(0, 2 * np.pi, num_vars, endpoint=False).tolist()
@@ -359,41 +309,34 @@ def create_rdf_only_radar(output_path_base):
     
     plt.tight_layout()
     
-    # Save in both PNG and PDF formats
+    # Save in PNG, EPS, and PDF formats
     png_path = output_path_base + '.png'
+    eps_path = output_path_base + '.eps'
     pdf_path = output_path_base + '.pdf'
     
     plt.savefig(png_path, dpi=300, bbox_inches='tight', format='png')
-    plt.savefig(pdf_path, bbox_inches='tight', format='pdf')
+    plt.savefig(eps_path, dpi=300, bbox_inches='tight', format='eps')
+    plt.savefig(pdf_path, dpi=300, bbox_inches='tight', format='pdf')
     
     print(f"RDF-only radar diagram saved to:")
     print(f"  • PNG: {png_path}")
+    print(f"  • EPS: {eps_path}")
     print(f"  • PDF: {pdf_path}")
     
     plt.close(fig)
 
 
-def create_json_only_radar(output_path_base):
+def create_json_only_radar(json_metrics, output_path_base):
     """
-    Create a radar diagram for JSON validation metrics only in PNG and PDF formats.
+    Create a radar diagram for JSON validation metrics only in PNG and EPS formats.
     
     Args:
         output_path_base: Base path to save the visualization (without extension)
     """
     fig, ax = plt.subplots(figsize=(14, 12), subplot_kw=dict(projection='polar'))
     
-    # JSON metrics
-    json_metrics = {
-        'Structure\nPreservation': 0.8,
-        'Schema\nCompleteness': 0.8,
-        'Semantic\nEquivalence': 0.8,
-        'Class\nPreservation': 1.0,
-        'SHACL\nConformance': 0.0,
-        'F1 Score': 0.8
-    }
-    
     categories = list(json_metrics.keys())
-    json_values = list(json_metrics.values())
+    json_values = radar_values(json_metrics)
     
     num_vars = len(categories)
     angles = np.linspace(0, 2 * np.pi, num_vars, endpoint=False).tolist()
@@ -418,15 +361,18 @@ def create_json_only_radar(output_path_base):
     
     plt.tight_layout()
     
-    # Save in both PNG and PDF formats
+    # Save in PNG, EPS, and PDF formats
     png_path = output_path_base + '.png'
+    eps_path = output_path_base + '.eps'
     pdf_path = output_path_base + '.pdf'
     
     plt.savefig(png_path, dpi=300, bbox_inches='tight', format='png')
-    plt.savefig(pdf_path, bbox_inches='tight', format='pdf')
+    plt.savefig(eps_path, dpi=300, bbox_inches='tight', format='eps')
+    plt.savefig(pdf_path, dpi=300, bbox_inches='tight', format='pdf')
     
     print(f"JSON-only radar diagram saved to:")
     print(f"  • PNG: {png_path}")
+    print(f"  • EPS: {eps_path}")
     print(f"  • PDF: {pdf_path}")
     
     plt.close(fig)
@@ -451,34 +397,38 @@ def main():
     validation_results = load_validation_results(validation_dir)
     print(f"Loaded {len(validation_results)} validation report(s)\n")
     
-    # Extract metrics
-    print("Extracting metrics...")
-    metrics = extract_metrics(validation_results)
+    # Extract the exact metric dictionaries written by run_all_validations.py.
+    print("Extracting metrics from master-validation-report.json...")
+    rdf_metrics, json_metrics = extract_radar_metrics(validation_results)
     
     print("Metrics extracted:")
-    for metric, value in metrics.items():
-        print(f"  • {metric}: {value:.2%}")
+    for metric, value in rdf_metrics.items():
+        display_value = 'N/A' if value is None else f'{value:.2%}'
+        print(f"  • RDF {metric}: {display_value}")
+    for metric, value in json_metrics.items():
+        display_value = 'N/A' if value is None else f'{value:.2%}'
+        print(f"  • JSON {metric}: {display_value}")
     print()
     
     # Create visualizations
-    print("Creating visualizations (PNG + PDF formats)...\n")
-    
+    print("Creating visualizations (PNG + EPS + PDF formats)...\n")
+
     # 1. Comparison radar diagram (RDF vs JSON side-by-side)
     print("[1/3] Generating RDF vs JSON Comparison Radar Diagram...")
     radar_output = os.path.join(output_dir, 'rdf-json-comparison')
-    create_radar_comparison_diagram(validation_results, radar_output)
+    create_radar_comparison_diagram(rdf_metrics, json_metrics, radar_output)
     print()
     
     # 2. RDF-only detailed radar
     print("[2/3] Generating RDF-Only Detailed Radar Diagram...")
     rdf_only_output = os.path.join(output_dir, 'rdf-validation')
-    create_rdf_only_radar(rdf_only_output)
+    create_rdf_only_radar(rdf_metrics, rdf_only_output)
     print()
     
     # 3. JSON-only detailed radar
     print("[3/3] Generating JSON-Only Detailed Radar Diagram...")
     json_only_output = os.path.join(output_dir, 'json-validation')
-    create_json_only_radar(json_only_output)
+    create_json_only_radar(json_metrics, json_only_output)
     print()
 
 

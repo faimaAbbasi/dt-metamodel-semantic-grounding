@@ -17,6 +17,7 @@ from scipy.spatial.distance import cosine
 from sentence_transformers import SentenceTransformer
 import jellyfish
 import os
+import random
 from datetime import datetime
 import re
 
@@ -185,11 +186,11 @@ def perform_alignment(
     """
     alignments = []
     
-    for s_uri in source_uris:
+    for s_uri in sorted(source_uris):
         best_match = None
         best_score = threshold
         
-        for t_uri in target_uris:
+        for t_uri in sorted(target_uris):
             score = calculate_similarity_score(s_uri, t_uri, source_emb, target_emb)
             
             if score > best_score:
@@ -253,7 +254,7 @@ def calculate_alignment_metrics(
 
 def run_alignment_sensitivity_experiment(
     metamodel_json_path: str = None,
-    target_ontology_path: str = 'brick.ttl'
+    target_ontology_path: str = None
 ) -> Dict[str, Any]:
     """
     Run alignment sensitivity experiment comparing RDF vs JSON baseline.
@@ -265,6 +266,8 @@ def run_alignment_sensitivity_experiment(
     # Initialize paths
     if metamodel_json_path is None:
         metamodel_json_path = os.path.join(get_project_output_dir(), 'metamodel.json')
+    if target_ontology_path is None:
+        target_ontology_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'brick.ttl')
     
     # ===== LOAD DATA =====
     print("\n[1/5] Loading data...")
@@ -322,12 +325,16 @@ def run_alignment_sensitivity_experiment(
         target_graph = Graph()
     
     # Extract classes
-    source_classes_rdf = extract_classes(rdf_graph)
-    source_classes_json = {f"http://metamodel#{cls['name']}" for cls in metamodel_json}
+    source_classes_rdf = sorted(extract_classes(rdf_graph))
+    source_classes_json = sorted(f"http://metamodel#{cls['name']}" for cls in metamodel_json)
     all_target_classes = extract_classes(target_graph) if len(target_graph) > 0 else source_classes_rdf
     
     # For efficiency, limit target classes to top 50 (real scenario would use actual gold standard)
-    target_classes = list(all_target_classes)[:50] if len(all_target_classes) > 50 else all_target_classes
+    sorted_target_classes = sorted(all_target_classes)
+    if len(sorted_target_classes) > 50:
+        target_classes = sorted(random.Random(42).sample(sorted_target_classes, 50))
+    else:
+        target_classes = sorted_target_classes
     
     print(f"  - Source classes (RDF): {len(source_classes_rdf)}")
     print(f"  - Source classes (JSON): {len(source_classes_json)}")
@@ -488,6 +495,10 @@ def print_results(results: Dict[str, Any]):
     print("-" * 80)
     rdf_metrics = results['methods']['rdf_based']['metrics']
     print(f"  Alignments found: {results['methods']['rdf_based']['alignments_count']}")
+    print(f"  False Positives: {rdf_metrics['false_positives']}")
+    print(f"  False Negatives: {rdf_metrics['false_negatives']}")
+    print(f"  True Positives: {rdf_metrics['true_positives']}")
+    print(f"  Ground Truth: {rdf_metrics['ground_truth_count']}")
     print(f"  Precision: {rdf_metrics['precision']:.3f}")
     print(f"  Recall:    {rdf_metrics['recall']:.3f}")
     print(f"  F1-Score:  {rdf_metrics['f1_score']:.3f}")
@@ -496,6 +507,10 @@ def print_results(results: Dict[str, Any]):
     print("-" * 80)
     json_metrics = results['methods']['json_baseline']['metrics']
     print(f"  Alignments found: {results['methods']['json_baseline']['alignments_count']}")
+    print(f"  False Positives: {json_metrics['false_positives']}")
+    print(f"  False Negatives: {json_metrics['false_negatives']}")
+    print(f"  True Positives: {json_metrics['true_positives']}")
+    print(f"  Ground Truth: {json_metrics['ground_truth_count']}")
     print(f"  Precision: {json_metrics['precision']:.3f}")
     print(f"  Recall:    {json_metrics['recall']:.3f}")
     print(f"  F1-Score:  {json_metrics['f1_score']:.3f}")

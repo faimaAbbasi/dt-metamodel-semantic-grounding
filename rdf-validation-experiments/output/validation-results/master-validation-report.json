@@ -1,9 +1,9 @@
 {
-  "execution_timestamp": "2026-04-22T16:09:11.588981",
+  "execution_timestamp": "2026-09-22T14:04:42.442928",
   "results": {
     "rdf_transformation": {
       "status": "success",
-      "report_path": "C:\\Users\\abbasi\\Desktop\\dt-model-alignment\\rdf-validation\\output\\validation-results\\rdf-validation-report.json",
+      "report_path": "C:\\Users\\abbasi\\Desktop\\dt-model-alignment\\rdf-validation-experiments\\output\\validation-results\\rdf-validation-report.json",
       "summary": {
         "structure_preservation_rate": 1.0,
         "schema_completeness_score": 1.0,
@@ -19,7 +19,7 @@
     },
     "alignment_sensitivity": {
       "status": "success",
-      "report_path": "C:\\Users\\abbasi\\Desktop\\dt-model-alignment\\rdf-validation\\output\\validation-results\\alignment-sensitivity-experiment.json",
+      "report_path": "C:\\Users\\abbasi\\Desktop\\dt-model-alignment\\rdf-validation-experiments\\output\\validation-results\\alignment-sensitivity-experiment.json",
       "summary": {
         "rdf_f1_score": 1.0,
         "json_f1_score": 0.8000000000000002,
@@ -32,5 +32,23 @@
     "successful": 3,
     "failed": 0,
     "errors": []
+  },
+  "visualization_metrics": {
+    "rdf": {
+      "Structure\nPreservation": 1.0,
+      "Schema\nCompleteness": 1.0,
+      "Semantic\nEquivalence": 1.0,
+      "Class\nPreservation": 1.0,
+      "SHACL\nConformance": true,
+      "F1 Score": 1.0
+    },
+    "json": {
+      "Structure\nPreservation": 1.0,
+      "Schema\nCompleteness": 1.0,
+      "Semantic\nEquivalence": 1.0,
+      "Class\nPreservation": 1.0,
+      "SHACL\nConformance": false,
+      "F1 Score": 0.8000000000000002
+    }
   }
 }

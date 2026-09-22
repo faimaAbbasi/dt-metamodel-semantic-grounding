@@ -110,7 +110,7 @@ def reconstruct_metamodel_from_rdf(graph: Graph) -> List[Dict]:
         class_ref = URIRef(class_uri)
         
         # Extract basic class info
-        label = get_best_label(graph, class_ref)
+        label = extract_local_name(class_uri)
         comment_node = graph.value(class_ref, RDFS.comment)
         description = str(comment_node) if comment_node else ""
         
@@ -119,7 +119,8 @@ def reconstruct_metamodel_from_rdf(graph: Graph) -> List[Dict]:
         for prop in graph.subjects(RDFS.domain, class_ref):
             if isinstance(prop, BNode):
                 continue
-            prop_label = get_best_label(graph, prop)
+            prop_local_name = extract_local_name(str(prop))
+            prop_label = prop_local_name.split("_", 1)[-1]
             range_val = graph.value(prop, RDFS.range)
             
             # Check if it's a datatype property
@@ -135,7 +136,8 @@ def reconstruct_metamodel_from_rdf(graph: Graph) -> List[Dict]:
         for prop in graph.subjects(RDFS.domain, class_ref):
             if isinstance(prop, BNode):
                 continue
-            prop_label = get_best_label(graph, prop)
+            prop_local_name = extract_local_name(str(prop))
+            prop_label = prop_local_name.split("_", 1)[-1]
             range_val = graph.value(prop, RDFS.range)
             
             # Check if it's an object property
@@ -143,7 +145,7 @@ def reconstruct_metamodel_from_rdf(graph: Graph) -> List[Dict]:
             is_object = prop_type == OWL.ObjectProperty or isinstance(range_val, URIRef)
             
             if is_object and isinstance(range_val, URIRef):
-                range_name = get_best_label(graph, range_val)
+                range_name = extract_local_name(str(range_val))
                 ref_attrs.append(f"{prop_label}: {range_name}")
         
         reconstructed.append({
@@ -214,6 +216,95 @@ def validate_round_trip(original_json: List[Dict], reconstructed_json: List[Dict
                                              if total_orig_attrs > 0 else 0.0)
     
     return results
+
+
+def build_rdf_graph_from_metamodel(metamodel: List[Dict]) -> Graph:
+    """Build the canonical RDF graph used by transformation experiments."""
+    BASE = Namespace("http://metamodel#")
+    graph = Graph()
+    graph.bind("meta", BASE)
+    graph.bind("rdfs", RDFS)
+    graph.bind("rdf", RDF)
+    graph.bind("owl", OWL)
+
+    for cls in metamodel:
+        class_uri = BASE[cls["name"]]
+        graph.add((class_uri, RDF.type, RDFS.Class))
+        graph.add((class_uri, RDFS.label, Literal(cls["name"])))
+        graph.add((class_uri, RDFS.comment, Literal(cls.get("description", ""))))
+
+        for attr in cls.get("primitive_attributes", []):
+            if ":" in attr:
+                attr_name, attr_type = map(str.strip, attr.split(":", 1))
+                prop_uri = BASE[f"{cls['name']}_{attr_name}"]
+                graph.add((prop_uri, RDF.type, OWL.DatatypeProperty))
+                graph.add((prop_uri, RDFS.domain, class_uri))
+                graph.add((prop_uri, RDFS.range, Literal(attr_type)))
+
+        for ref in cls.get("reference_attributes", []):
+            if ":" in ref:
+                ref_name, ref_type_raw = map(str.strip, ref.split(":", 1))
+                ref_type = ref_type_raw.replace("[]", "")
+                prop_uri = BASE[f"{cls['name']}_{ref_name}"]
+                graph.add((prop_uri, RDF.type, OWL.ObjectProperty))
+                graph.add((prop_uri, RDFS.domain, class_uri))
+                graph.add((prop_uri, RDFS.range, BASE[ref_type]))
+
+    return graph
+
+
+def validate_json_representation(metamodel: List[Dict]) -> Dict[str, Any]:
+    """Measure JSON structure, schema completeness, and reference integrity."""
+    total_classes = len(metamodel)
+    valid_names = {
+        item.get("name") for item in metamodel
+        if isinstance(item, dict)
+        and isinstance(item.get("name"), str)
+        and item["name"].strip()
+    }
+    class_rate = len(valid_names) / total_classes if total_classes else 0.0
+
+    required_fields = (
+        ("name", str),
+        ("description", str),
+        ("primitive_attributes", list),
+        ("reference_attributes", list),
+    )
+    schema_checks = [
+        isinstance(item, dict)
+        and field in item
+        and isinstance(item[field], expected_type)
+        for item in metamodel
+        for field, expected_type in required_fields
+    ]
+    schema_rate = sum(schema_checks) / len(schema_checks) if schema_checks else 0.0
+
+    references = [
+        reference.split(":", 1)[1].replace("[]", "").strip()
+        for item in metamodel
+        if isinstance(item, dict)
+        for reference in item.get("reference_attributes", [])
+        if isinstance(reference, str) and ":" in reference
+    ]
+    valid_reference_count = sum(reference in valid_names for reference in references)
+    semantic_rate = (
+        valid_reference_count / len(references) if references else 1.0
+    )
+
+    return {
+        "structure_preservation_rate": class_rate,
+        "schema_completeness_score": schema_rate,
+        "semantic_equivalence_rate": semantic_rate,
+        "class_preservation_rate": class_rate,
+        "details": {
+            "class_count": total_classes,
+            "valid_class_names": len(valid_names),
+            "schema_checks": len(schema_checks),
+            "schema_checks_passed": sum(schema_checks),
+            "reference_count": len(references),
+            "valid_references": valid_reference_count,
+        },
+    }
 
 # ==================== 2. SCHEMA COMPLETENESS CHECKS ====================
 
@@ -532,36 +623,7 @@ def run_all_validations(metamodel_json_path: str = None) -> Dict[str, Any]:
     
     # Generate RDF graph from metamodel
     print("\n[2/6] Generating RDF graph from metamodel...")
-    BASE = Namespace("http://metamodel#")
-    source_graph = Graph()
-    source_graph.bind("meta", BASE)
-    source_graph.bind("rdfs", RDFS)
-    source_graph.bind("rdf", RDF)
-    source_graph.bind("owl", OWL)
-    
-    for cls in source_model_json:
-        class_uri = BASE[cls["name"]]
-        source_graph.add((class_uri, RDF.type, RDFS.Class))
-        source_graph.add((class_uri, RDFS.label, Literal(cls["name"])))
-        source_graph.add((class_uri, RDFS.comment, Literal(cls["description"])))
-
-        for attr in cls.get("primitive_attributes", []):
-            if ":" in attr:
-                attr_name, attr_type = map(str.strip, attr.split(":"))
-                prop_uri = BASE[f"{cls['name']}_{attr_name}"]
-                source_graph.add((prop_uri, RDF.type, OWL.DatatypeProperty))
-                source_graph.add((prop_uri, RDFS.domain, class_uri))
-                source_graph.add((prop_uri, RDFS.range, Literal(attr_type)))
-
-        for ref in cls.get("reference_attributes", []):
-            if ":" in ref:
-                ref_name, ref_type_raw = map(str.strip, ref.split(":"))
-                ref_type = ref_type_raw.replace("[]", "")
-                prop_uri = BASE[f"{cls['name']}_{ref_name}"]
-                target_uri = BASE[ref_type]
-                source_graph.add((prop_uri, RDF.type, OWL.ObjectProperty))
-                source_graph.add((prop_uri, RDFS.domain, class_uri))
-                source_graph.add((prop_uri, RDFS.range, target_uri))
+    source_graph = build_rdf_graph_from_metamodel(source_model_json)
     
     print(f"✓ Generated RDF graph with {len(source_graph)} triples")
     
@@ -581,6 +643,9 @@ def run_all_validations(metamodel_json_path: str = None) -> Dict[str, Any]:
     reconstructed_json = reconstruct_metamodel_from_rdf(source_graph)
     roundtrip_results = validate_round_trip(source_model_json, reconstructed_json)
     all_results["validations"]["roundtrip"] = roundtrip_results
+
+    json_results = validate_json_representation(source_model_json)
+    all_results["validations"]["json"] = json_results
     
     print(f"   Class preservation rate: {roundtrip_results['class_preservation_rate']:.1%}")
     print(f"   Attribute preservation rate: {roundtrip_results['attribute_preservation_rate']:.1%}")
@@ -620,7 +685,8 @@ def run_all_validations(metamodel_json_path: str = None) -> Dict[str, Any]:
     
     # 4. SEMANTIC EQUIVALENCE
     print("\n[6/6] Testing semantic equivalence...")
-    semantic_results = semantic_equivalence_test(source_graph, source_graph)
+    reconstructed_graph = build_rdf_graph_from_metamodel(reconstructed_json)
+    semantic_results = semantic_equivalence_test(source_graph, reconstructed_graph)
     all_results["validations"]["semantic_equivalence"] = semantic_results
     
     print(f"   Queries tested: {semantic_results['queries_tested']}")
@@ -658,6 +724,7 @@ def run_all_validations(metamodel_json_path: str = None) -> Dict[str, Any]:
         "semantic_equivalence_rate": semantic_rate,
         "overall_transformation_quality": overall_quality
     }
+    all_results["json_summary"] = json_results
     
     return all_results
 

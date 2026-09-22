@@ -39,6 +39,20 @@ def get_validation_results_dir():
     os.makedirs(results_dir, exist_ok=True)
     return results_dir
 
+
+def calculate_rdf_validation_metrics(rdf_results, shacl_results, f1_score):
+    """Build radar metrics exclusively from RDF validation results."""
+    summary = rdf_results.get('summary', {})
+    roundtrip = rdf_results.get('validations', {}).get('roundtrip', {})
+    return {
+        'Structure\nPreservation': summary.get('structure_preservation_rate'),
+        'Schema\nCompleteness': summary.get('schema_completeness_score'),
+        'Semantic\nEquivalence': summary.get('semantic_equivalence_rate'),
+        'Class\nPreservation': roundtrip.get('class_preservation_rate'),
+        'SHACL\nConformance': shacl_results.get('validation', {}).get('conforms'),
+        'F1 Score': f1_score,
+    }
+
 # ==================== VALIDATION IMPORTS ====================
 try:
     from validate_rdf_transformation import run_all_validations as run_rdf_validation, save_validation_report
@@ -169,6 +183,28 @@ def main():
         print(f"\n✓ Alignment Sensitivity Experiment: COMPLETED")
         print(f"  Report: {report_path}")
         all_results["summary"]["successful"] += 1
+
+        rdf_f1_score = alignment_results["methods"]["rdf_based"]["metrics"]["f1_score"]
+        json_f1_score = alignment_results["methods"]["json_baseline"]["metrics"]["f1_score"]
+        rdf_metrics = calculate_rdf_validation_metrics(
+            rdf_validation_results,
+            shacl_results,
+            rdf_f1_score,
+        )
+        json_validation = rdf_validation_results.get('validations', {}).get('json', {})
+        json_metrics = {
+            'Structure\nPreservation': json_validation.get('structure_preservation_rate'),
+            'Schema\nCompleteness': json_validation.get('schema_completeness_score'),
+            'Semantic\nEquivalence': json_validation.get('semantic_equivalence_rate'),
+            'Class\nPreservation': json_validation.get('class_preservation_rate'),
+            # JSON passes equivalent constraints, but JSON itself is not SHACL-conformant.
+            'SHACL\nConformance': False,
+            'F1 Score': json_f1_score,
+        }
+        all_results["visualization_metrics"] = {
+            "rdf": rdf_metrics,
+            "json": json_metrics,
+        }
         
     except Exception as e:
         error_msg = f"Alignment Sensitivity Experiment failed: {str(e)}"

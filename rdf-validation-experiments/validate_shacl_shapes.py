@@ -300,6 +300,38 @@ def validate_shacl_constraints_manual(data_graph: Graph) -> Dict[str, Any]:
         "statistics": stats
     }
 
+
+def validate_json_constraints(metamodel: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Validate JSON constraints equivalent to the RDF SHACL requirements."""
+    violations = []
+    class_names = {
+        item.get("name") for item in metamodel
+        if isinstance(item, dict) and isinstance(item.get("name"), str)
+    }
+
+    for index, item in enumerate(metamodel):
+        if not isinstance(item, dict):
+            violations.append({"item": index, "message": "Class entry must be an object"})
+            continue
+        for field in ("name", "description", "primitive_attributes", "reference_attributes"):
+            if field not in item:
+                violations.append({"item": index, "message": f"Missing field: {field}"})
+        for reference in item.get("reference_attributes", []):
+            if not isinstance(reference, str) or ":" not in reference:
+                violations.append({"item": index, "message": "Malformed reference attribute"})
+                continue
+            target = reference.split(":", 1)[1].replace("[]", "").strip()
+            if target not in class_names:
+                violations.append({"item": index, "message": f"Unknown reference target: {target}"})
+
+    return {
+        "status": "completed",
+        "conforms": not violations,
+        "violations_count": len(violations),
+        "violations": violations[:20],
+        "validation_type": "JSON constraints equivalent to SHACL requirements",
+    }
+
 # ==================== REPORT GENERATION ====================
 
 def run_shacl_validation(
@@ -378,6 +410,17 @@ def run_shacl_validation(
     if validation_result.get("status") == "skipped":
         print("⚠ pyshacl not installed, using manual validation fallback...")
         validation_result = validate_shacl_constraints_manual(data_graph)
+
+    json_validation_result = {"status": "skipped", "reason": "JSON metamodel not loaded"}
+    json_path = os.path.join(get_project_output_dir(), "metamodel.json")
+    try:
+        with open(json_path, "r", encoding="utf-8") as file:
+            json_validation_result = validate_json_constraints(json.load(file))
+    except (OSError, json.JSONDecodeError) as error:
+        json_validation_result = {
+            "status": "error",
+            "error": str(error),
+        }
     
     # Compile results
     results = {
@@ -385,13 +428,20 @@ def run_shacl_validation(
         "validation_method": "SHACL-based",
         "data_graph": {
             "triples": len(data_graph),
-            "classes": len([c for c in data_graph.subjects(RDF.type, (OWL.Class, RDFS.Class))]),
-            "properties": len([p for p in data_graph.subjects(RDF.type, (OWL.ObjectProperty, OWL.DatatypeProperty, RDF.Property))])
+            "classes": len({
+                c for class_type in (OWL.Class, RDFS.Class)
+                for c in data_graph.subjects(RDF.type, class_type)
+            }),
+            "properties": len({
+                p for property_type in (OWL.ObjectProperty, OWL.DatatypeProperty, RDF.Property)
+                for p in data_graph.subjects(RDF.type, property_type)
+            })
         },
         "shapes_graph": {
             "triples": len(shapes_graph)
         },
-        "validation": validation_result
+        "validation": validation_result,
+        "json_validation": json_validation_result,
     }
     
     # Print summary
@@ -424,6 +474,12 @@ def run_shacl_validation(
                     if 'focusNode' in v:
                         node_name = v['focusNode'].split('#')[-1] if '#' in v['focusNode'] else v['focusNode']
                         print(f"      on: {node_name}")
+
+    print("\nJSON representation constraints:")
+    if json_validation_result.get("conforms"):
+        print("  ✓ JSON conforms to the equivalent structural constraints")
+    else:
+        print(f"  ✗ JSON violations found: {json_validation_result.get('violations_count', 0)}")
     
     # Save results
     results_dir = get_validation_results_dir()

@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-04-22T16:09:11.747396",
+  "timestamp": "2026-09-22T14:04:42.651358",
   "validation_method": "SHACL-based",
   "data_graph": {
     "triples": 69,
-    "classes": 0,
-    "properties": 0
+    "classes": 7,
+    "properties": 16
   },
   "shapes_graph": {
     "triples": 49
@@ -21,5 +21,12 @@
       "properties_with_domain": 16,
       "properties_with_range": 16
     }
+  },
+  "json_validation": {
+    "status": "completed",
+    "conforms": true,
+    "violations_count": 0,
+    "violations": [],
+    "validation_type": "JSON constraints equivalent to SHACL requirements"
   }
 }

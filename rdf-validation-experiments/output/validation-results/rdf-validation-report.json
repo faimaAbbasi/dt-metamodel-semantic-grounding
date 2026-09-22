@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-22T16:09:11.591942",
+  "timestamp": "2026-09-22T14:04:42.444973",
   "source_statistics": {
     "json_classes": 7,
     "rdf_triples": 69,
@@ -12,7 +12,7 @@
       "original_class_count": 7,
       "reconstructed_class_count": 7,
       "class_preservation_rate": 1.0,
-      "attribute_preservation_rate": 0.0,
+      "attribute_preservation_rate": 0.625,
       "preserved_classes": [
         "building",
         "room",
@@ -24,6 +24,20 @@
       ],
       "missing_classes": [],
       "details": []
+    },
+    "json": {
+      "structure_preservation_rate": 1.0,
+      "schema_completeness_score": 1.0,
+      "semantic_equivalence_rate": 1.0,
+      "class_preservation_rate": 1.0,
+      "details": {
+        "class_count": 7,
+        "valid_class_names": 7,
+        "schema_checks": 28,
+        "schema_checks_passed": 28,
+        "reference_count": 6,
+        "valid_references": 6
+      }
     },
     "completeness": {
       "total_classes": 7,
@@ -38,7 +52,7 @@
       "issues": [],
       "class_details": [
         {
-          "uri": "http://metamodel#Building",
+          "uri": "http://metamodel#TemperatureSensor",
           "has_label": true,
           "has_comment": true
         },
@@ -48,12 +62,7 @@
           "has_comment": true
         },
         {
-          "uri": "http://metamodel#TemperatureSensor",
-          "has_label": true,
-          "has_comment": true
-        },
-        {
-          "uri": "http://metamodel#Room",
+          "uri": "http://metamodel#ProximitySensor",
           "has_label": true,
           "has_comment": true
         },
@@ -63,12 +72,17 @@
           "has_comment": true
         },
         {
-          "uri": "http://metamodel#ProximitySensor",
+          "uri": "http://metamodel#Room",
           "has_label": true,
           "has_comment": true
         },
         {
           "uri": "http://metamodel#HumiditySensor",
+          "has_label": true,
+          "has_comment": true
+        },
+        {
+          "uri": "http://metamodel#Building",
           "has_label": true,
           "has_comment": true
         }
@@ -96,8 +110,8 @@
             "(rdflib.term.URIRef('http://metamodel#Room'),)"
           ],
           "sample_rdf": [
-            "(rdflib.term.URIRef('http://metamodel#Building'),)",
-            "(rdflib.term.URIRef('http://metamodel#Room'),)"
+            "(rdflib.term.URIRef('http://metamodel#TemperatureSensor'),)",
+            "(rdflib.term.URIRef('http://metamodel#Controller'),)"
           ]
         },
         {
@@ -120,8 +134,8 @@
             "(rdflib.term.URIRef('http://metamodel#Building_rooms'), rdflib.term.URIRef('http"
           ],
           "sample_rdf": [
-            "(rdflib.term.URIRef('http://metamodel#Building_id'), rdflib.term.URIRef('http://",
-            "(rdflib.term.URIRef('http://metamodel#Building_rooms'), rdflib.term.URIRef('http"
+            "(rdflib.term.URIRef('http://metamodel#TemperatureSensor_value'), rdflib.term.URI",
+            "(rdflib.term.URIRef('http://metamodel#TemperatureSensor_unit'), rdflib.term.URIR"
           ]
         },
         {
@@ -135,8 +149,8 @@
             "(rdflib.term.URIRef('http://metamodel#Room_id'), rdflib.term.Literal('isString')"
           ],
           "sample_rdf": [
-            "(rdflib.term.URIRef('http://metamodel#Building_id'), rdflib.term.Literal('isStri",
-            "(rdflib.term.URIRef('http://metamodel#Room_id'), rdflib.term.Literal('isString')"
+            "(rdflib.term.URIRef('http://metamodel#TemperatureSensor_value'), rdflib.term.Lit",
+            "(rdflib.term.URIRef('http://metamodel#ProximitySensor_value'), rdflib.term.Liter"
           ]
         },
         {
@@ -160,5 +174,19 @@
     "schema_completeness_score": 1.0,
     "semantic_equivalence_rate": 1.0,
     "overall_transformation_quality": 1.0
+  },
+  "json_summary": {
+    "structure_preservation_rate": 1.0,
+    "schema_completeness_score": 1.0,
+    "semantic_equivalence_rate": 1.0,
+    "class_preservation_rate": 1.0,
+    "details": {
+      "class_count": 7,
+      "valid_class_names": 7,
+      "schema_checks": 28,
+      "schema_checks_passed": 28,
+      "reference_count": 6,
+      "valid_references": 6
+    }
   }
 }
