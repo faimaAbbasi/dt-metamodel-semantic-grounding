@@ -5,6 +5,9 @@ venv/
 .env/
 .venv/
 
+# Ignore one specific folder
+semantic-drift/
+
 # Ignore Python cache files
 __pycache__/
 *.pyc
