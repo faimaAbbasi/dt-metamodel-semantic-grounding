@@ -1,12 +1,13 @@
 ## Semantic Grounding of Digital Twin Metamodel Using RDF Graphs 
 
-This repository demonstrates **semantic grounding (alignment and mapping) of digital twin (DT) metamodels using RDF graphs**. We consider **a multi-layered digital twin (DT)** architecture and address hetrogeniety challenge by introducing a semantic grounding pipeline to enable consistent and reliable interoperability between different abstraction layers. Submitted to a journal, it provides source code, datasets, and documentation for the air quality use case set up.
+This repository demonstrates **semantic grounding (alignment and mapping) of digital twin (DT) metamodels using RDF graphs**. We consider **a multi-layered digital twin (DT)** and address hetrogeniety challenge by introducing a semantic grounding pipeline to enable consistent and reliable interoperability between different abstraction layers. Submitted to a journal, it provides source code, datasets, and documentation for the air quality use case set up.
 
 It also includes reproducible experiments for:
 
-- Lifting heterogeneous metamodels into **RDF** graphs to unify their representation and enable semantic grounding.
+- Modelling multi-layered DT using a flexible modeling framework to systematically organize data, models and metamodels.
+- Applying knowledge externalization and semantically lift DT metamodels to RDF graphs unifying their representation and enabling semantic grounding.
 - Performing graph-based alignment between lifted metamodel and ontology, proposing a semantics and structure-aware metamodel ontology matching (**SSM-OM**) method.   
-- Conducting an empirical evaluation using a DT use case to assess interoperability, cross-layer traceability and domain applicability, complemented by benchmark test cases from **[OAEI testcases](https://oaei.ontologymatching.org/)** to evaluate general alignment performance, along with validation of the correctness of the **RDF** transformation.
+- Conducting evaluation using a DT use case to assess interoperability, cross-layer traceability and domain applicability, complemented by benchmark test cases from **[OAEI testcases](https://oaei.ontologymatching.org/)** to evaluate general alignment performance, along with validation of the correctness of the **RDF** transformation.
 
 ### Air Quality Usecase 
 
