@@ -5,7 +5,7 @@ This repository demonstrates **semantic grounding (alignment and mapping) of dig
 It also includes reproducible experiments for:
 
 - Modelling multi-layered DT using a flexible modeling framework to systematically organize data, models and metamodels.
-- Applying knowledge externalization and semantically lift DT metamodels to RDF graphs unifying their representation and enabling semantic grounding.
+- Applying knowledge externalization and semantically lifting DT metamodels to RDF graphs to unify their representation and enable semantic grounding.
 - Performing graph-based alignment between lifted metamodel and ontology, proposing a semantics and structure-aware metamodel ontology matching (**SSM-OM**) method.   
 - Conducting evaluation using a DT use case to assess interoperability, cross-layer traceability and domain applicability, complemented by benchmark test cases from **[OAEI testcases](https://oaei.ontologymatching.org/)** to evaluate general alignment performance, along with validation of the correctness of the **RDF** transformation.
 
